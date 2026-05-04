@@ -28,3 +28,6 @@ Thumbs.db
 
 # referencia (privada)
 referencia/
+
+# image originals (backup local)
+src/assets/**/_originals/

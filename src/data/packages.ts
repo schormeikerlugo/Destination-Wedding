@@ -1,11 +1,11 @@
 import type { ImageMetadata } from "astro";
 
-import europeImg from "@assets/galeria/04-portrait-couple-light.jpg";
-import naImg from "@assets/galeria/02-portrait-couple.jpg";
-import saImg from "@assets/galeria/05-portrait-couple-embrace.jpg";
-import asiaImg from "@assets/galeria/09-ceremony-vertical.jpg";
-import africaImg from "@assets/galeria/16-landscape-venue.jpg";
-import oceaniaImg from "@assets/galeria/18-aerial-landscape.jpg";
+import europeImg from "@assets/galeria/19-package-europe.jpg";
+import naImg from "@assets/galeria/20-package-north-america.jpg";
+import saImg from "@assets/galeria/21-package-south-america.jpg";
+import asiaImg from "@assets/galeria/22-package-asia.jpg";
+import africaImg from "@assets/galeria/23-package-africa.jpg";
+import oceaniaImg from "@assets/galeria/24-package-oceania.jpg";
 
 export type Package = {
   id: string;
