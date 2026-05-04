@@ -29,6 +29,8 @@
   /* — Type — */
   --f-sans: "Inter Tight Variable", "Inter Tight", -apple-system, "Segoe UI",
     system-ui, sans-serif;
+  --f-mono: "JetBrains Mono Variable", ui-monospace, "SF Mono", Menlo, Consolas,
+    monospace;
 
   --fs-11: 0.6875rem;
   --fs-12: 0.75rem;

@@ -1,37 +1,26 @@
 ---
 import "./Hero.css";
 import { Image } from "astro:assets";
-import camera from "../../../public/images/hero/camara.png";
+import Pill from "@ui/Pill.astro";
+import heroPhoto from "@assets/hero/lake-kiss.jpg";
 ---
 
 <section class="hero" id="hero" aria-labelledby="hero-title">
-  <!-- Background — photographic viewfinder -->
-  <div class="hero__bg" aria-hidden="true">
-    <span class="hero__sphere hero__sphere--1" data-hero-sphere-1></span>
-    <span class="hero__sphere hero__sphere--2" data-hero-sphere-2></span>
-
-    <!-- Rule of thirds grid -->
-    <div class="hero__grid-lines">
-      <span class="hero__grid-v" style="--x: 33.333%"></span>
-      <span class="hero__grid-v" style="--x: 66.666%"></span>
-      <span class="hero__grid-h" style="--y: 33.333%"></span>
-      <span class="hero__grid-h" style="--y: 66.666%"></span>
-    </div>
-
-    <!-- Aperture rings -->
-    <span class="hero__ring hero__ring--1" data-hero-ring-1></span>
-    <span class="hero__ring hero__ring--2" data-hero-ring-2></span>
-    <span class="hero__ring hero__ring--3" data-hero-ring-3></span>
-
-    <!-- Crosshair / focus reticle -->
-    <span class="hero__crosshair" data-hero-crosshair>
-      <span class="hero__crosshair-tick hero__crosshair-tick--n"></span>
-      <span class="hero__crosshair-tick hero__crosshair-tick--s"></span>
-      <span class="hero__crosshair-tick hero__crosshair-tick--e"></span>
-      <span class="hero__crosshair-tick hero__crosshair-tick--w"></span>
-    </span>
-
-    <svg class="hero__grain" preserveAspectRatio="none">
+  <!-- Full-bleed background photo -->
+  <div class="hero__media" data-hero-media>
+    <Image
+      src={heroPhoto}
+      alt="Bride and groom kissing on a balustrade overlooking the Italian lakes"
+      class="hero__media-img"
+      widths={[960, 1280, 1600, 2000, 2400]}
+      sizes="100vw"
+      loading="eager"
+      decoding="async"
+      format="webp"
+      quality={88}
+    />
+    <div class="hero__media-overlay" aria-hidden="true"></div>
+    <svg class="hero__grain" preserveAspectRatio="none" aria-hidden="true">
       <filter id="hero-grain">
         <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" />
         <feColorMatrix type="saturate" values="0" />
@@ -40,96 +29,42 @@ import camera from "../../../public/images/hero/camara.png";
     </svg>
   </div>
 
-  <div class="container hero__grid">
-    <!-- Top meta row -->
-    <div class="hero__top-left" data-hero-top-l>
-      <p class="t-mono">
+  <!-- Content layer -->
+  <div class="hero__shell">
+    <div class="container hero__top">
+      <p class="t-mono hero__eyebrow" data-hero-eyebrow>
         <span class="hero__dot" aria-hidden="true"></span>
-        Destination Collection 2026
+        Est. 2016 · Worldwide
       </p>
+      <div class="hero__location" data-hero-location>
+        <span class="t-mono">01 — Riva del Garda, Italy</span>
+      </div>
     </div>
 
-    <div class="hero__top-right" data-hero-top-r>
-      <span class="t-mono">EN <span class="hero__sep">·</span> <span class="text-muted">FR</span></span>
-    </div>
-
-    <!-- Left block -->
-    <header class="hero__lead" data-hero-lead>
+    <div class="container hero__center">
       <h1 id="hero-title" class="hero__title" data-hero-title>
-        <span class="hero__title-line"><span>Kathrin</span></span>
-        <span class="hero__title-line"><span>Ledwon<sup>™</sup></span></span>
+        <span class="hero__title-line"><span>Destination</span></span>
+        <span class="hero__title-line"><span>Weddings</span></span>
       </h1>
-      <p class="hero__sub t-mono">Wedding Reportage — ©2026</p>
-      <ul role="list" class="hero__badges">
-        <li>
-          <span class="hero__badge">
-            <span class="hero__badge-dot" aria-hidden="true"></span>
-            Award-winning
-          </span>
-        </li>
-        <li>
-          <span class="hero__badge hero__badge--alt">
-            <span aria-hidden="true">★</span>
-            Featured worldwide
-          </span>
-        </li>
-      </ul>
-    </header>
+    </div>
 
-    <!-- Camera (center, top-most layer) -->
-    <figure class="hero__camera" data-hero-camera>
-      <Image
-        src={camera}
-        alt="Professional wedding camera with 24-70mm zoom lens"
-        class="hero__camera-img"
-        widths={[640, 960, 1280, 1600]}
-        sizes="(min-width: 1280px) 720px, (min-width: 768px) 60vw, 90vw"
-        loading="eager"
-        decoding="async"
-        format="webp"
-        quality={92}
-      />
-      <span class="hero__camera-tag hero__camera-tag--top">
-        <span aria-hidden="true">●</span> 24/70 · ƒ1.4
-      </span>
-      <span class="hero__camera-tag hero__camera-tag--bottom">ISO 200 · 1/200</span>
-    </figure>
-
-    <!-- Right block -->
-    <aside class="hero__index" data-hero-index>
-      <div class="hero__index-row">
-        <span class="hero__index-num">01</span>
-        <span class="hero__index-bar" aria-hidden="true"></span>
-      </div>
-      <p class="hero__index-text">
-        A living reportage of fleeting moments, raw emotions and the unseen
-        details that make your day unforgettable.
-      </p>
-      <p class="hero__index-meta t-mono">
-        Storytelling · Wedding Reportage · Worldwide
-      </p>
-    </aside>
-
-    <!-- Bottom row -->
-    <article class="hero__player" data-hero-player>
-      <button type="button" class="hero__player-btn" aria-label="Open reel" data-reel-shortcut>
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M8 5v14l11-7z" fill="currentColor" />
-        </svg>
-      </button>
-      <div class="hero__player-meta">
-        <p class="t-mono">Reel · 2026</p>
-        <p class="hero__player-text">
-          Award-winning destination wedding photographer.<br />
-          Capturing love stories worldwide. All rights reserved.
+    <div class="container hero__bottom">
+      <div class="hero__lead-card" data-hero-lead>
+        <p class="hero__lead-text">
+          Editorial wedding experiences from the world’s most breathtaking
+          shores. Captured forever, in every fleeting moment.
         </p>
+        <div class="hero__cta">
+          <Pill href="#cta" variant="invert" size="md" arrow="right">Plan Your Wedding</Pill>
+          <Pill href="#work" variant="ghost" size="md" arrow="right">Explore Stories</Pill>
+        </div>
       </div>
-    </article>
 
-    <a class="hero__scroll" href="#manifest" aria-label="Scroll to manifesto" data-nav-link data-hero-scroll>
-      <span class="t-mono">Scroll</span>
-      <span class="hero__scroll-arrow" aria-hidden="true">↓</span>
-    </a>
+      <a class="hero__scroll" href="#manifest" aria-label="Scroll to manifesto" data-nav-link data-hero-scroll>
+        <span class="t-mono">Scroll</span>
+        <span class="hero__scroll-arrow" aria-hidden="true">↓</span>
+      </a>
+    </div>
   </div>
 </section>
 

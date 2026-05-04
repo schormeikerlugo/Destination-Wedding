@@ -47,6 +47,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
       url: site.url,
       areaServed: "Worldwide",
       serviceType: "Destination Wedding Photography",
+      founder: { "@type": "Person", name: site.founder },
       sameAs: site.social.map((s) => s.href),
     })} />
   </head>

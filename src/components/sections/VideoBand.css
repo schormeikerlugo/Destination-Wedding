@@ -1,0 +1,63 @@
+.video-band {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  height: 500px;
+  overflow: hidden;
+  background: var(--c-ink);
+  isolation: isolate;
+}
+
+.video-band__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.video-band__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 10, 0.18) 0%,
+    rgba(10, 10, 10, 0) 30%,
+    rgba(10, 10, 10, 0) 70%,
+    rgba(10, 10, 10, 0.4) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.video-band__meta {
+  position: absolute;
+  left: clamp(1.5rem, 4vw, 3rem);
+  bottom: clamp(1.5rem, 4vw, 2.5rem);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-12);
+  z-index: 2;
+}
+
+.video-band__index,
+.video-band__caption {
+  color: var(--c-white);
+  background: rgba(10, 10, 10, 0.42);
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--r-pill);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+@media (max-width: 720px) {
+  .video-band { height: 380px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .video-band__video {
+    /* The browser already disables autoplay loop in reduced-motion environments
+       on most platforms. Pause defensively so it freezes on poster. */
+    animation-play-state: paused;
+  }
+}

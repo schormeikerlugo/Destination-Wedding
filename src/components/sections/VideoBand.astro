@@ -1,0 +1,32 @@
+---
+import "./VideoBand.css";
+
+interface Props {
+  src: string;
+  caption?: string;
+  poster?: string;
+  index?: string;
+}
+
+const { src, caption, poster, index } = Astro.props;
+---
+
+<section class="video-band" aria-label={caption || "Cinematic video band"}>
+  <video
+    class="video-band__video"
+    src={src}
+    poster={poster}
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="metadata"
+  ></video>
+  <div class="video-band__overlay" aria-hidden="true"></div>
+  {(index || caption) && (
+    <div class="video-band__meta">
+      {index && <span class="video-band__index t-mono">{index}</span>}
+      {caption && <span class="video-band__caption t-mono">{caption}</span>}
+    </div>
+  )}
+</section>

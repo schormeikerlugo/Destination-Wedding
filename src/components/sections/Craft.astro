@@ -1,0 +1,131 @@
+---
+import "./Craft.css";
+import { Image } from "astro:assets";
+import camera from "../../../public/images/hero/camara.png";
+---
+
+<section class="craft section" id="craft" aria-labelledby="craft-title">
+  <!-- Background — photographic viewfinder -->
+  <div class="craft__bg" aria-hidden="true">
+    <span class="craft__sphere craft__sphere--1" data-craft-sphere-1></span>
+    <span class="craft__sphere craft__sphere--2" data-craft-sphere-2></span>
+
+    <div class="craft__grid-lines">
+      <span class="craft__grid-v" style="--x: 33.333%"></span>
+      <span class="craft__grid-v" style="--x: 66.666%"></span>
+      <span class="craft__grid-h" style="--y: 33.333%"></span>
+      <span class="craft__grid-h" style="--y: 66.666%"></span>
+    </div>
+
+    <span class="craft__ring craft__ring--1" data-craft-ring-1></span>
+    <span class="craft__ring craft__ring--2" data-craft-ring-2></span>
+    <span class="craft__ring craft__ring--3" data-craft-ring-3></span>
+
+    <span class="craft__crosshair" data-craft-crosshair>
+      <span class="craft__crosshair-tick craft__crosshair-tick--n"></span>
+      <span class="craft__crosshair-tick craft__crosshair-tick--s"></span>
+      <span class="craft__crosshair-tick craft__crosshair-tick--e"></span>
+      <span class="craft__crosshair-tick craft__crosshair-tick--w"></span>
+    </span>
+
+    <svg class="craft__grain" preserveAspectRatio="none">
+      <filter id="craft-grain">
+        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" />
+        <feColorMatrix type="saturate" values="0" />
+      </filter>
+      <rect width="100%" height="100%" filter="url(#craft-grain)" />
+    </svg>
+  </div>
+
+  <div class="container craft__grid">
+    <div class="craft__top-left" data-craft-top-l>
+      <p class="t-mono">
+        <span class="craft__dot" aria-hidden="true"></span>
+        06 / The Craft
+      </p>
+    </div>
+
+    <div class="craft__top-right" data-craft-top-r>
+      <span class="t-mono">Behind the lens</span>
+    </div>
+
+    <header class="craft__lead" data-craft-lead>
+      <h2 id="craft-title" class="craft__title" data-craft-title>
+        <span class="craft__title-line"><span>The</span></span>
+        <span class="craft__title-line"><span>Craft<sup>™</sup></span></span>
+      </h2>
+      <p class="craft__sub t-mono">Editorial Wedding Reportage</p>
+      <ul role="list" class="craft__badges">
+        <li>
+          <span class="craft__badge">
+            <span class="craft__badge-dot" aria-hidden="true"></span>
+            24-70mm · ƒ1.4
+          </span>
+        </li>
+        <li>
+          <span class="craft__badge craft__badge--alt">
+            <span aria-hidden="true">★</span>
+            Award-winning
+          </span>
+        </li>
+      </ul>
+    </header>
+
+    <figure class="craft__camera" data-craft-camera>
+      <Image
+        src={camera}
+        alt="Professional wedding camera with 24-70mm zoom lens"
+        class="craft__camera-img"
+        widths={[640, 960, 1280, 1600]}
+        sizes="(min-width: 1280px) 640px, (min-width: 768px) 60vw, 90vw"
+        loading="lazy"
+        decoding="async"
+        format="webp"
+        quality={92}
+      />
+      <span class="craft__camera-tag craft__camera-tag--top">
+        <span aria-hidden="true">●</span> 24/70 · ƒ1.4
+      </span>
+      <span class="craft__camera-tag craft__camera-tag--bottom">ISO 200 · 1/200</span>
+    </figure>
+
+    <aside class="craft__index" data-craft-index>
+      <div class="craft__index-row">
+        <span class="craft__index-num">06</span>
+        <span class="craft__index-bar" aria-hidden="true"></span>
+      </div>
+      <p class="craft__index-text">
+        Every wedding is documented with the same intention: a living reportage
+        of fleeting moments, raw emotions and the unseen details that make your
+        day unforgettable.
+      </p>
+      <p class="craft__index-meta t-mono">
+        Storytelling · Wedding Reportage · Worldwide
+      </p>
+    </aside>
+
+    <article class="craft__player" data-craft-player>
+      <button type="button" class="craft__player-btn" aria-label="Open reel" data-reel-shortcut>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M8 5v14l11-7z" fill="currentColor" />
+        </svg>
+      </button>
+      <div class="craft__player-meta">
+        <p class="t-mono">Reel · 2026</p>
+        <p class="craft__player-text">
+          A glimpse behind the lens — capturing love stories from
+          the world’s most breathtaking shores.
+        </p>
+      </div>
+    </article>
+
+    <a class="craft__scroll" href="#investment" aria-label="Continue to investment" data-nav-link data-craft-scroll>
+      <span class="t-mono">Continue</span>
+      <span class="craft__scroll-arrow" aria-hidden="true">↓</span>
+    </a>
+  </div>
+</section>
+
+<script>
+  import "./Craft.client";
+</script>

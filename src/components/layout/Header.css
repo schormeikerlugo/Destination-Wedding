@@ -4,6 +4,13 @@
   z-index: var(--z-sticky);
   padding-block: var(--s-20);
   background: rgba(255, 255, 255, 0);
+  /* Header adapts to whatever lies underneath. The site starts on top of the
+     dark hero photo so we render in white; once condensed (scroll > 24px) we
+     swap to the regular ink palette over the white sheet. */
+  --header-fg: var(--c-white);
+  --header-fg-alt: rgba(255, 255, 255, 0.9);
+  --header-line: rgba(255, 255, 255, 0.6);
+  --header-pill-border: rgba(255, 255, 255, 0.6);
   transition:
     padding var(--t-base) var(--ease-out),
     background var(--t-base) var(--ease-out),
@@ -13,10 +20,14 @@
 
 .site-header.is-condensed {
   padding-block: var(--s-12);
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: saturate(140%) blur(14px);
   -webkit-backdrop-filter: saturate(140%) blur(14px);
   box-shadow: 0 1px 0 var(--c-line-soft);
+  --header-fg: var(--c-ink);
+  --header-fg-alt: var(--c-ink);
+  --header-line: var(--c-ink);
+  --header-pill-border: var(--c-ink);
 }
 
 .site-header.is-hidden {
@@ -30,12 +41,21 @@
   gap: var(--s-32);
 }
 
+.site-header__brand,
+.site-header__brand:hover,
+.site-header__brand:focus-visible {
+  color: var(--header-fg);
+  text-decoration: none;
+}
+
 .site-header__brand-mark {
   font-family: var(--f-sans);
   font-weight: 700;
-  font-size: var(--fs-18);
-  letter-spacing: var(--tracking-tighter);
-  color: var(--c-ink);
+  font-size: var(--fs-13);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: inherit;
+  transition: color var(--t-base) var(--ease-out);
 }
 
 .site-header__nav {
@@ -57,8 +77,10 @@
   font-size: var(--fs-13);
   font-weight: 500;
   letter-spacing: 0;
-  color: var(--c-ink);
+  color: var(--header-fg);
   padding-block: var(--s-6);
+  cursor: pointer;
+  transition: color var(--t-base) var(--ease-out);
 }
 
 .site-header__nav-link::after {
@@ -66,15 +88,42 @@
   position: absolute;
   inset: auto 0 4px 0;
   height: 1px;
-  background: var(--c-ink);
+  background: var(--header-line);
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform var(--t-base) var(--ease-out);
+  transition:
+    transform var(--t-base) var(--ease-out),
+    background var(--t-base) var(--ease-out);
 }
 
 .site-header__nav-link:hover::after,
 .site-header__nav-link:focus-visible::after {
   transform: scaleX(1);
+}
+
+/* Pill in the header inherits the colour mode too */
+.site-header__cta {
+  color: var(--header-fg);
+  border-color: var(--header-pill-border);
+  background: transparent;
+  transition:
+    color var(--t-base) var(--ease-out),
+    border-color var(--t-base) var(--ease-out),
+    background var(--t-base) var(--ease-out);
+}
+
+.site-header__cta:hover,
+.site-header__cta:focus-visible {
+  background: var(--header-fg);
+  color: var(--c-ink);
+  border-color: var(--header-fg);
+}
+
+.site-header.is-condensed .site-header__cta:hover,
+.site-header.is-condensed .site-header__cta:focus-visible {
+  background: var(--c-ink);
+  color: var(--c-white);
+  border-color: var(--c-ink);
 }
 
 .site-header__meta {
@@ -93,7 +142,14 @@
   gap: 6px;
   align-items: center;
   border-radius: 999px;
-  border: 1px solid var(--c-line);
+  border: 1px solid var(--header-pill-border);
+  background: transparent;
+  transition:
+    border-color var(--t-base) var(--ease-out),
+    background var(--t-base) var(--ease-out);
+}
+
+.site-header.is-condensed .site-header__menu {
   background: var(--c-white);
 }
 
@@ -101,7 +157,8 @@
   display: block;
   width: 16px;
   height: 1px;
-  background: var(--c-ink);
+  background: var(--header-fg);
+  transition: background var(--t-base) var(--ease-out);
 }
 
 .site-header__sheet {

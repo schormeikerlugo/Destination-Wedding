@@ -1,15 +1,16 @@
 export const site = {
-  name: "Kathrin Ledwon",
-  brand: "kathrin.®",
-  tagline: "Destination Wedding Photography",
+  name: "Destination Wedding",
+  brand: "Destination Wedding",
+  founder: "Kathrin Ledwon",
+  tagline: "Editorial Wedding Experiences",
   description:
-    "Award-winning destination wedding photographer capturing timeless, emotional, and authentic love stories across the globe.",
-  url: "https://kathrinledwon.com",
-  email: "hello@kathrinledwon.com",
+    "Destination Wedding — editorial wedding experiences captured worldwide. Photography by Kathrin Ledwon, award-winning destination wedding photographer.",
+  url: "https://destinationwedding.com",
+  email: "hello@destinationwedding.com",
   location: "Based worldwide · Available globally",
   yearStart: 2016,
   cta: {
-    label: "Start a Project",
+    label: "Plan Your Wedding",
     href: "#cta",
   },
   social: [
@@ -30,6 +31,7 @@ export const site = {
     { id: "about", label: "About" },
     { id: "studio", label: "Studio" },
     { id: "work", label: "Work" },
+    { id: "craft", label: "Craft" },
     { id: "investment", label: "Investment" },
     { id: "faq", label: "FAQ" },
     { id: "cta", label: "Connect" },

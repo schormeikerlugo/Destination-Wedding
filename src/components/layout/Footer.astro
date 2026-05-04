@@ -30,10 +30,13 @@ const year = new Date().getFullYear();
   <div class="container site-footer__bottom">
     <span class="t-mono">Let’s connect</span>
     <a class="site-footer__email" href={`mailto:${site.email}`}>
-      drop me an email at:
+      drop us an email at:
       <span>{site.email}</span>
     </a>
-    <span class="t-mono site-footer__brand-mark">{site.name}</span>
+    <span class="site-footer__brand-block">
+      <span class="t-mono site-footer__brand-mark">{site.name}</span>
+      <span class="t-mono site-footer__sub-brand">Photography by {site.founder}</span>
+    </span>
   </div>
 
   <div class="container site-footer__copy">

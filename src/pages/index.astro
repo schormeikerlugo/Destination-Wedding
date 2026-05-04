@@ -7,9 +7,11 @@ import Manifest from "@sections/Manifest.astro";
 import About from "@sections/About.astro";
 import Studio from "@sections/Studio.astro";
 import Gallery from "@sections/Gallery.astro";
+import Craft from "@sections/Craft.astro";
 import Packages from "@sections/Packages.astro";
 import Faq from "@sections/Faq.astro";
 import CtaFinal from "@sections/CtaFinal.astro";
+import VideoBand from "@sections/VideoBand.astro";
 import PageIndex from "@ui/PageIndex.astro";
 import { site } from "@data/site";
 ---
@@ -20,9 +22,20 @@ import { site } from "@data/site";
   <Hero />
   <Manifest />
   <About />
+  <VideoBand
+    src="/videos/band-1.mp4"
+    caption="Worldwide · Italian Lakes"
+    index="01"
+  />
   <Studio />
   <Gallery />
+  <Craft />
   <Packages />
+  <VideoBand
+    src="/videos/band-2.mp4"
+    caption="Aerial perspectives · Destination weddings"
+    index="02"
+  />
   <Faq />
   <CtaFinal />
   <Footer slot="footer" />

@@ -85,25 +85,51 @@ import Pill from "@ui/Pill.astro";
   });
 
   const header = document.querySelector<HTMLElement>("[data-site-header]");
-  let lastY = window.scrollY;
+  let lastY = 0;
   let raf = 0;
-  function onScroll() {
+
+  function readScrollY(): number {
+    return window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+  }
+
+  function applyHeaderState() {
     if (!header) return;
-    const y = window.scrollY;
+    const y = readScrollY();
     const goingDown = y > lastY && y > 80;
     header.classList.toggle("is-condensed", y > 24);
     header.classList.toggle("is-hidden", goingDown);
     lastY = y;
   }
-  window.addEventListener(
-    "scroll",
-    () => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = 0;
-        onScroll();
-      });
-    },
-    { passive: true }
-  );
+
+  function onScroll() {
+    if (raf) return;
+    raf = requestAnimationFrame(() => {
+      raf = 0;
+      applyHeaderState();
+    });
+  }
+
+  // Listen to native scroll on multiple targets to cover all engines
+  // (Lenis dispatches a native "scroll" on window in most setups).
+  window.addEventListener("scroll", onScroll, { passive: true });
+  document.addEventListener("scroll", onScroll, { passive: true });
+
+  // Also subscribe directly to Lenis once it's ready, so the header reacts
+  // even if the native scroll event is throttled or proxied.
+  function bindLenis() {
+    import("@lib/lenis").then(({ getLenis }) => {
+      const lenis = getLenis();
+      if (lenis) {
+        lenis.on("scroll", applyHeaderState);
+      } else {
+        // Lenis may not be ready yet (bootstrap runs after this script).
+        // Retry shortly.
+        setTimeout(bindLenis, 200);
+      }
+    });
+  }
+  bindLenis();
+
+  // Run once on load to set the initial state correctly.
+  applyHeaderState();
 </script>
