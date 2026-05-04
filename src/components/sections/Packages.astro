@@ -1,5 +1,6 @@
 ---
 import "./Packages.css";
+import { Image } from "astro:assets";
 import { packages } from "@data/packages";
 import Pill from "@ui/Pill.astro";
 ---
@@ -43,11 +44,24 @@ import Pill from "@ui/Pill.astro";
           </button>
           <div class="invest-row__panel" data-row-panel>
             <div class="invest-row__panel-inner">
-              <p class="t-body invest-row__blurb">{pkg.blurb}</p>
-              <ul role="list" class="invest-row__list">
-                {pkg.destinations.map((d) => <li>· {d}</li>)}
-              </ul>
-              <Pill href="#cta" variant="outline" size="sm" arrow="right">Inquire</Pill>
+              <figure class="invest-row__media" data-row-media>
+                <Image
+                  src={pkg.image}
+                  alt={pkg.imageAlt}
+                  widths={[240, 360, 500]}
+                  sizes="(min-width: 640px) 200px, 80vw"
+                  loading="lazy"
+                  format="webp"
+                  quality={80}
+                />
+              </figure>
+              <div class="invest-row__copy">
+                <p class="t-body invest-row__blurb">{pkg.blurb}</p>
+                <ul role="list" class="invest-row__list">
+                  {pkg.destinations.map((d) => <li>· {d}</li>)}
+                </ul>
+                <Pill href="#cta" variant="outline" size="sm" arrow="right">Inquire</Pill>
+              </div>
             </div>
           </div>
         </li>

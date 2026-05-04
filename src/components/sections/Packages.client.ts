@@ -66,6 +66,16 @@ rows.forEach((row) => {
             panel.style.height = "auto";
           },
         });
+        // Reveal the media image with a small delay so it lands after the
+        // panel has started opening — adds a layered, editorial entrance.
+        const media = row.querySelector<HTMLElement>("[data-row-media]");
+        if (media) {
+          gsap.fromTo(
+            media,
+            { opacity: 0, y: 14 },
+            { opacity: 1, y: 0, duration: 0.7, delay: 0.15, ease: "expo.out" }
+          );
+        }
       }
     }
   });
