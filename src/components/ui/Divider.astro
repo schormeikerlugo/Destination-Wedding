@@ -1,0 +1,17 @@
+---
+interface Props {
+  variant?: "default" | "ink";
+  margin?: boolean;
+}
+const { variant = "default", margin = false } = Astro.props;
+---
+<hr
+  class:list={["hairline", variant === "ink" && "hairline--ink", margin && "hairline--margin"]}
+  aria-hidden="true"
+/>
+
+<style>
+  .hairline--margin {
+    margin-block: clamp(3rem, 6vw, 5rem);
+  }
+</style>

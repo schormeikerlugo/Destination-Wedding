@@ -1,0 +1,57 @@
+---
+type Variant = "outline" | "filled" | "ghost" | "invert";
+type Size = "sm" | "md";
+type Arrow = "right" | "down" | "up" | "diagonal" | "none";
+
+interface Props {
+  href?: string;
+  type?: "button" | "submit";
+  variant?: Variant;
+  size?: Size;
+  arrow?: Arrow;
+  class?: string;
+  ariaLabel?: string;
+  dataAttr?: string;
+}
+
+const {
+  href,
+  type = "button",
+  variant = "outline",
+  size = "md",
+  arrow = "right",
+  class: extra = "",
+  ariaLabel,
+  dataAttr,
+} = Astro.props;
+
+const classes = [
+  "pill",
+  variant !== "outline" && `pill--${variant}`,
+  size === "sm" && "pill--sm",
+  extra,
+]
+  .filter(Boolean)
+  .join(" ");
+
+const arrows: Record<Arrow, string> = {
+  right: "→",
+  down: "↓",
+  up: "↑",
+  diagonal: "↗",
+  none: "",
+};
+const arrowChar = arrows[arrow];
+---
+
+{href ? (
+  <a href={href} class={classes} aria-label={ariaLabel} data-arrow={arrow} data-pill={dataAttr}>
+    <span><slot /></span>
+    {arrowChar && <span class="arrow" aria-hidden="true">{arrowChar}</span>}
+  </a>
+) : (
+  <button type={type} class={classes} aria-label={ariaLabel} data-arrow={arrow} data-pill={dataAttr}>
+    <span><slot /></span>
+    {arrowChar && <span class="arrow" aria-hidden="true">{arrowChar}</span>}
+  </button>
+)}

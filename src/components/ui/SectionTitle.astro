@@ -1,0 +1,94 @@
+---
+interface Props {
+  index?: string;
+  eyebrow?: string;
+  /** Each item is a line of the title */
+  lines: string[];
+  variant?: "default" | "mega";
+  align?: "left" | "right";
+  id?: string;
+}
+
+const {
+  index,
+  eyebrow,
+  lines,
+  variant = "default",
+  align = "left",
+  id,
+} = Astro.props;
+---
+
+<header
+  class:list={[
+    "section-title",
+    `section-title--${variant}`,
+    align === "right" && "section-title--right",
+  ]}
+  data-section-title
+>
+  {(index || eyebrow) && (
+    <p class="section-title__meta t-eyebrow">
+      {index && <span class="section-title__index">{index}</span>}
+      {index && eyebrow && <span class="section-title__sep" aria-hidden="true">/</span>}
+      {eyebrow && <span>{eyebrow}</span>}
+    </p>
+  )}
+  <h2 id={id} class:list={[
+    variant === "mega" ? "t-display-mega" : "t-display",
+    "section-title__title",
+  ]}>
+    {lines.map((line) => (
+      <span class="section-title__line"><span>{line}</span></span>
+    ))}
+  </h2>
+</header>
+
+<style>
+  .section-title {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  .section-title--right {
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .section-title__meta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-10);
+  }
+
+  .section-title__index {
+    font-feature-settings: "tnum";
+    color: var(--c-ink);
+  }
+
+  .section-title__sep {
+    color: var(--c-line-strong);
+  }
+
+  .section-title__title {
+    margin: 0;
+  }
+
+  .section-title__line {
+    display: block;
+    overflow: hidden;
+    padding-block: 0.04em;
+  }
+
+  .section-title__line > span {
+    display: inline-block;
+    will-change: transform;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .section-title__line > span {
+      transform: none !important;
+    }
+  }
+</style>

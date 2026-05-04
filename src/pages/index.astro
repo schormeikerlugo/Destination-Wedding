@@ -1,0 +1,29 @@
+---
+import Base from "@/layouts/Base.astro";
+import Header from "@layout/Header.astro";
+import Footer from "@layout/Footer.astro";
+import Hero from "@sections/Hero.astro";
+import Manifest from "@sections/Manifest.astro";
+import About from "@sections/About.astro";
+import Studio from "@sections/Studio.astro";
+import Gallery from "@sections/Gallery.astro";
+import Packages from "@sections/Packages.astro";
+import Faq from "@sections/Faq.astro";
+import CtaFinal from "@sections/CtaFinal.astro";
+import PageIndex from "@ui/PageIndex.astro";
+import { site } from "@data/site";
+---
+
+<Base>
+  <Header slot="header" />
+  <PageIndex sections={[...site.pageIndex]} />
+  <Hero />
+  <Manifest />
+  <About />
+  <Studio />
+  <Gallery />
+  <Packages />
+  <Faq />
+  <CtaFinal />
+  <Footer slot="footer" />
+</Base>

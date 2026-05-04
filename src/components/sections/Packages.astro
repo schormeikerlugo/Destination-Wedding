@@ -1,0 +1,70 @@
+---
+import "./Packages.css";
+import { packages } from "@data/packages";
+import Pill from "@ui/Pill.astro";
+---
+
+<section class="invest section section--soft" id="investment" aria-labelledby="invest-title">
+  <div class="container invest__header">
+    <div>
+      <p class="t-mono">05 / Investment</p>
+      <h2 id="invest-title" class="invest__title t-display-bold" data-invest-title>
+        <span class="invest__title-line"><span>Designed</span></span>
+        <span class="invest__title-line"><span>for every</span></span>
+        <span class="invest__title-line"><span>horizon.</span></span>
+      </h2>
+    </div>
+    <div class="invest__intro">
+      <p class="t-body">
+        Each package includes coverage, hand-crafted editing and a private
+        online gallery. Custom packages — additional days, a second shooter,
+        film hybrid coverage — are always available.
+      </p>
+    </div>
+  </div>
+
+  <div class="container">
+    <ul role="list" class="invest__table" data-invest-table>
+      {packages.map((pkg, i) => (
+        <li class="invest-row" data-row>
+          <button
+            type="button"
+            class="invest-row__btn"
+            aria-expanded="false"
+            data-row-toggle
+          >
+            <span class="invest-row__num t-mono">{String(i + 1).padStart(2, "0")}</span>
+            <span class="invest-row__region">{pkg.region}</span>
+            <span class="invest-row__price">
+              {pkg.priceFrom && <span class="invest-row__from t-mono">From</span>}
+              <strong>{pkg.price}</strong>
+            </span>
+            <span class="invest-row__arrow" aria-hidden="true">→</span>
+          </button>
+          <div class="invest-row__panel" data-row-panel>
+            <div class="invest-row__panel-inner">
+              <p class="t-body invest-row__blurb">{pkg.blurb}</p>
+              <ul role="list" class="invest-row__list">
+                {pkg.destinations.map((d) => <li>· {d}</li>)}
+              </ul>
+              <Pill href="#cta" variant="outline" size="sm" arrow="right">Inquire</Pill>
+            </div>
+          </div>
+        </li>
+      ))}
+
+      <li class="invest-row invest-row--custom">
+        <div class="invest-row__btn invest-row__btn--static">
+          <span class="invest-row__num t-mono">07</span>
+          <span class="invest-row__region">Custom</span>
+          <span class="invest-row__price"><strong>Tailored</strong></span>
+          <Pill href="#cta" variant="invert" size="sm" arrow="right">Build mine</Pill>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<script>
+  import "./Packages.client";
+</script>

@@ -1,0 +1,201 @@
+.invest {
+  border-top: 1px solid var(--c-line-soft);
+  border-bottom: 1px solid var(--c-line-soft);
+}
+
+.invest__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: end;
+  margin-bottom: clamp(2rem, 5vw, 4rem);
+}
+
+.invest__title {
+  font-weight: 700;
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  line-height: 0.96;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  margin: var(--s-12) 0 0 0;
+}
+
+.invest__title-line {
+  display: block;
+  overflow: hidden;
+  padding-block: 0.04em;
+}
+
+.invest__title-line > span {
+  display: inline-block;
+  will-change: transform;
+}
+
+.invest__intro .t-body {
+  max-width: 38ch;
+}
+
+.invest__table {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid var(--c-line);
+}
+
+.invest-row {
+  border-bottom: 1px solid var(--c-line);
+  transition: background var(--t-base) var(--ease-out);
+}
+
+.invest-row:hover { background: rgba(10, 10, 10, 0.025); }
+
+.invest-row__btn {
+  display: grid;
+  grid-template-columns: 60px minmax(0, 1.2fr) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--s-24);
+  width: 100%;
+  text-align: left;
+  padding: clamp(1.25rem, 2.4vw, 1.8rem) clamp(0.5rem, 1.5vw, 1.5rem);
+  cursor: pointer;
+  color: var(--c-ink);
+  background: transparent;
+  border: 0;
+}
+
+.invest-row__btn--static {
+  cursor: default;
+  grid-template-columns: 60px minmax(0, 1.2fr) minmax(0, 1fr) auto;
+}
+
+.invest-row__num {
+  color: var(--c-fg-muted);
+}
+
+.invest-row__region {
+  font-family: var(--f-sans);
+  font-weight: 600;
+  font-size: clamp(var(--fs-20), 2.6vw, var(--fs-32));
+  letter-spacing: var(--tracking-tight);
+  text-transform: uppercase;
+}
+
+.invest-row__price {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--s-8);
+  text-align: right;
+  justify-content: flex-end;
+}
+
+.invest-row__from {
+  color: var(--c-fg-muted);
+}
+
+.invest-row__price strong {
+  font-family: var(--f-sans);
+  font-weight: 700;
+  font-size: clamp(var(--fs-24), 3vw, var(--fs-40));
+  letter-spacing: var(--tracking-tighter);
+  font-feature-settings: "tnum";
+}
+
+.invest-row__arrow {
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid var(--c-line);
+  align-items: center;
+  justify-content: center;
+  color: var(--c-ink);
+  transition: transform var(--t-base) var(--ease-out), background var(--t-base) var(--ease-out), color var(--t-base) var(--ease-out);
+}
+
+.invest-row__btn:hover .invest-row__arrow {
+  background: var(--c-ink);
+  color: var(--c-white);
+  border-color: var(--c-ink);
+  transform: translateX(2px);
+}
+
+.invest-row.is-open .invest-row__arrow {
+  transform: rotate(90deg);
+  background: var(--c-ink);
+  color: var(--c-white);
+  border-color: var(--c-ink);
+}
+
+.invest-row__panel {
+  height: 0;
+  overflow: hidden;
+  will-change: height;
+}
+
+.invest-row__panel-inner {
+  padding: 0 clamp(0.5rem, 1.5vw, 1.5rem) clamp(1.25rem, 2.4vw, 1.8rem) calc(60px + var(--s-24));
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-12);
+  align-items: flex-start;
+  max-width: 60ch;
+}
+
+.invest-row__blurb {
+  margin: 0;
+}
+
+.invest-row__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-6) var(--s-16);
+  font-size: var(--fs-13);
+  color: var(--c-charcoal);
+}
+
+/* Custom row */
+.invest-row--custom {
+  background: var(--c-ink);
+  color: var(--c-white);
+  border-bottom: 0;
+}
+
+.invest-row--custom:hover { background: var(--c-graphite); }
+
+.invest-row--custom .invest-row__num,
+.invest-row--custom .invest-row__from {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.invest-row--custom .invest-row__region {
+  color: var(--c-white);
+}
+
+.invest-row--custom .invest-row__price strong {
+  color: var(--c-white);
+}
+
+.invest-row--custom .invest-row__btn--static {
+  cursor: default;
+}
+
+@media (max-width: 880px) {
+  .invest__header { grid-template-columns: 1fr; }
+
+  .invest-row__btn,
+  .invest-row__btn--static {
+    grid-template-columns: 40px 1fr auto;
+    gap: var(--s-12);
+  }
+
+  .invest-row__price { grid-column: 2 / span 2; justify-content: flex-start; }
+  .invest-row__arrow { grid-column: 3; grid-row: 1; }
+  .invest-row--custom .pill { grid-column: 2 / span 2; }
+
+  .invest-row__panel-inner {
+    padding-left: calc(40px + var(--s-12));
+  }
+}

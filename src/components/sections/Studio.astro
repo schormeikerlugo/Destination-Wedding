@@ -1,0 +1,67 @@
+---
+import "./Studio.css";
+import { Image } from "astro:assets";
+import Pill from "@ui/Pill.astro";
+import poster from "@assets/galeria/12-reception-wide.jpg";
+---
+
+<section class="studio section section--soft" id="studio" aria-labelledby="studio-title">
+  <div class="container studio__grid">
+    <button
+      type="button"
+      class="studio__media"
+      data-reel-open
+      aria-label="Open the wedding reel"
+    >
+      <Image
+        src={poster}
+        alt="Behind the scenes still from the wedding reel"
+        widths={[600, 900, 1200, 1600]}
+        sizes="(min-width: 980px) 50vw, 90vw"
+        loading="lazy"
+        format="webp"
+        quality={80}
+      />
+      <span class="studio__play" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+      </span>
+      <span class="studio__media-tag t-mono">Reel · 02:25</span>
+    </button>
+
+    <div class="studio__copy">
+      <p class="t-mono">03 / Studio</p>
+      <h2 id="studio-title" class="studio__title t-display-bold" data-studio-title>
+        <span class="studio__title-line"><span>Where</span></span>
+        <span class="studio__title-line"><span>the magic</span></span>
+        <span class="studio__title-line"><span>happens.</span></span>
+      </h2>
+      <p class="t-body">
+        A canvas for love stories. Whether you’re planning a ceremony beneath
+        Tuscan light or an elopement on a windswept cliff, I bring a calm,
+        documentary presence and a fully personalised approach tailored to
+        your unique day.
+      </p>
+      <Pill href="#work" variant="outline" size="md" arrow="right">Learn More</Pill>
+    </div>
+  </div>
+
+  <!-- Reel modal -->
+  <div class="studio__reel" data-reel aria-hidden="true" role="dialog" aria-label="Reel video">
+    <button type="button" class="studio__reel-close" data-reel-close aria-label="Close reel">×</button>
+    <div class="studio__reel-frame">
+      <video
+        data-reel-video
+        src="/videos/reel.mp4"
+        playsinline
+        muted
+        loop
+        preload="none"
+      ></video>
+      <span class="studio__reel-tag t-mono">Reel · 2026 · Kathrin Ledwon</span>
+    </div>
+  </div>
+</section>
+
+<script>
+  import "./Studio.client";
+</script>

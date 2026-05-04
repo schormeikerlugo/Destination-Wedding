@@ -1,0 +1,33 @@
+---
+import "./CtaFinal.css";
+import Pill from "@ui/Pill.astro";
+import { site } from "@data/site";
+---
+
+<section class="cta-final section" id="cta" aria-labelledby="cta-title">
+  <hr class="hairline" />
+  <div class="container cta-final__inner">
+    <h2 id="cta-title" class="cta-final__title t-display-mega" data-cta-title>
+      <span class="cta-final__line"><span data-word>Let’s</span> <span data-word>capture</span></span>
+      <span class="cta-final__line"><span data-word>a</span> <span data-word class="t-italic">moment</span> <span data-word>that</span></span>
+      <span class="cta-final__line"><span data-word>lasts</span> <span data-word>forever.</span> <span class="cta-final__symbol" aria-hidden="true">∞</span></span>
+    </h2>
+
+    <div class="cta-final__bottom">
+      <a class="cta-final__email" href={`mailto:${site.email}`}>
+        <span class="t-mono">drop me an email at:</span>
+        <span class="cta-final__email-addr">{site.email}</span>
+      </a>
+      <Pill href={`mailto:${site.email}`} variant="filled" size="md" arrow="diagonal">
+        Start a Project
+      </Pill>
+      <a class="cta-final__top" href="#hero" aria-label="Back to top" data-nav-link>
+        <span aria-hidden="true">↑</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  import "./CtaFinal.client";
+</script>

@@ -1,0 +1,66 @@
+---
+import "@styles/global.css";
+import { site } from "@data/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = `${site.name} — ${site.tagline}`,
+  description = site.description,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      name: site.name,
+      description: site.description,
+      url: site.url,
+      areaServed: "Worldwide",
+      serviceType: "Destination Wedding Photography",
+      sameAs: site.social.map((s) => s.href),
+    })} />
+  </head>
+  <body>
+    <a class="sr-only" href="#main">Skip to content</a>
+    <slot name="header" />
+    <main id="main" data-scroll-root>
+      <slot />
+    </main>
+    <slot name="footer" />
+
+    <script>
+      import { bootstrapSite } from "@lib/site-bootstrap";
+      bootstrapSite();
+    </script>
+  </body>
+</html>

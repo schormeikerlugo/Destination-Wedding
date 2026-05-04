@@ -1,0 +1,109 @@
+---
+import "./Header.css";
+import { site } from "@data/site";
+import Pill from "@ui/Pill.astro";
+---
+
+<header class="site-header" data-site-header>
+  <div class="container site-header__inner">
+    <a class="site-header__brand" href="#hero" aria-label={`${site.name} — home`} data-nav-link>
+      <span class="site-header__brand-mark">{site.brand}</span>
+    </a>
+
+    <nav class="site-header__nav" aria-label="Primary">
+      <ul role="list" class="site-header__nav-list">
+        {site.nav.map((item) => (
+          <li>
+            <a class="site-header__nav-link" href={item.href} data-nav-link>
+              <span>{item.label}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="site-header__meta">
+      <Pill href={site.cta.href} variant="outline" size="sm" arrow="right" class="site-header__cta">
+        {site.cta.label}
+      </Pill>
+      <button
+        type="button"
+        class="site-header__menu"
+        aria-label="Open menu"
+        aria-expanded="false"
+        data-menu-toggle
+      >
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="site-header__sheet" data-menu-sheet aria-hidden="true">
+    <ul role="list" class="site-header__sheet-list">
+      {site.nav.map((item) => (
+        <li>
+          <a href={item.href} data-nav-link>{item.label}</a>
+        </li>
+      ))}
+    </ul>
+    <a class="pill pill--filled" href={site.cta.href}>
+      <span>{site.cta.label}</span>
+      <span class="arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
+</header>
+
+<script>
+  import { scrollTo } from "@lib/lenis";
+
+  const links = document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]");
+  links.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const href = link.getAttribute("href");
+      if (!href || !href.startsWith("#")) return;
+      event.preventDefault();
+      scrollTo(href, -40);
+      const sheet = document.querySelector<HTMLElement>("[data-menu-sheet]");
+      if (sheet?.classList.contains("is-open")) {
+        sheet.classList.remove("is-open");
+        sheet.setAttribute("aria-hidden", "true");
+        document
+          .querySelector<HTMLButtonElement>("[data-menu-toggle]")
+          ?.setAttribute("aria-expanded", "false");
+      }
+    });
+  });
+
+  const toggle = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+  const sheet = document.querySelector<HTMLElement>("[data-menu-sheet]");
+  toggle?.addEventListener("click", () => {
+    if (!sheet) return;
+    const open = sheet.classList.toggle("is-open");
+    sheet.setAttribute("aria-hidden", String(!open));
+    toggle.setAttribute("aria-expanded", String(open));
+  });
+
+  const header = document.querySelector<HTMLElement>("[data-site-header]");
+  let lastY = window.scrollY;
+  let raf = 0;
+  function onScroll() {
+    if (!header) return;
+    const y = window.scrollY;
+    const goingDown = y > lastY && y > 80;
+    header.classList.toggle("is-condensed", y > 24);
+    header.classList.toggle("is-hidden", goingDown);
+    lastY = y;
+  }
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        onScroll();
+      });
+    },
+    { passive: true }
+  );
+</script>

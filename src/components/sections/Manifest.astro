@@ -1,0 +1,78 @@
+---
+import "./Manifest.css";
+import { Image } from "astro:assets";
+import Pill from "@ui/Pill.astro";
+import imgLeft from "@assets/galeria/04-portrait-couple-light.jpg";
+import imgMid from "@assets/galeria/06-portrait-couple-window.jpg";
+import imgRight from "@assets/galeria/10-ceremony-wide.jpg";
+---
+
+<section class="manifest section" id="manifest" aria-labelledby="manifest-title">
+  <h2 id="manifest-title" class="manifest__title t-display-mega" data-manifest-title>
+    <span class="manifest__line"><span>KATHRIN</span></span>
+    <span class="manifest__line"><span>LEDWON</span></span>
+  </h2>
+
+  <div class="container manifest__grid">
+    <div class="manifest__col manifest__col--meta">
+      <p class="t-mono">professional photographer<br />since {2016}</p>
+    </div>
+    <div class="manifest__col manifest__col--lead">
+      <p class="t-body">
+        Elevate your wedding with photography that captures your unique day,
+        ensuring every fleeting moment shines forever — across continents,
+        across cultures, across a lifetime.
+      </p>
+    </div>
+
+    <div class="manifest__col manifest__cta">
+      <Pill href="#cta" variant="outline" size="md" arrow="right">Start a Project</Pill>
+      <Pill href="#work" variant="ghost" size="md" arrow="right">My Portfolio</Pill>
+    </div>
+    <figure class="manifest__col manifest__photo manifest__photo--a" data-manifest-photo>
+      <Image
+        src={imgLeft}
+        alt="Couple in soft natural light"
+        widths={[300, 500, 700]}
+        sizes="(min-width: 980px) 22vw, 45vw"
+        loading="lazy"
+        format="webp"
+        quality={82}
+      />
+    </figure>
+    <figure class="manifest__col manifest__photo manifest__photo--b" data-manifest-photo>
+      <Image
+        src={imgMid}
+        alt="Couple by a window"
+        widths={[300, 500, 700]}
+        sizes="(min-width: 980px) 22vw, 45vw"
+        loading="lazy"
+        format="webp"
+        quality={82}
+      />
+    </figure>
+    <figure class="manifest__col manifest__photo manifest__photo--c" data-manifest-photo>
+      <Image
+        src={imgRight}
+        alt="Ceremony wide shot"
+        widths={[600, 900, 1200]}
+        sizes="(min-width: 980px) 42vw, 90vw"
+        loading="lazy"
+        format="webp"
+        quality={82}
+      />
+      <figcaption class="manifest__photo-caption">
+        Experience the magic of authentic destination wedding photography,
+        where we transform your day into timeless, captivating images.
+      </figcaption>
+    </figure>
+
+    <div class="manifest__col manifest__arrow" aria-hidden="true">
+      <span>↓</span>
+    </div>
+  </div>
+</section>
+
+<script>
+  import "./Manifest.client";
+</script>

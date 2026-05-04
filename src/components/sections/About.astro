@@ -1,0 +1,64 @@
+---
+import "./About.css";
+import { Image } from "astro:assets";
+import { site } from "@data/site";
+import kathrin from "@assets/about/kathrin.png";
+---
+
+<section class="about section" id="about" aria-labelledby="about-title">
+  <div class="container about__grid">
+    <header class="about__header">
+      <p class="t-mono">02 / About</p>
+      <h2 id="about-title" class="about__title t-display-bold" data-about-title>
+        <span class="about__title-line"><span>This is about me</span></span>
+        <span class="about__title-line"><span>and how I’ve done this.</span></span>
+      </h2>
+    </header>
+
+    <div class="about__copy" data-about-copy>
+      <p class="t-body">
+        I’m Kathrin Ledwon, a dedicated destination wedding photographer
+        specialising in capturing the essence and elegance of love stories
+        through timeless reportage.
+      </p>
+      <p class="t-body">
+        In every wedding, I’m reminded that photography is not just a
+        profession — it’s a passion and an art form. My dedication to the
+        craft, combined with technical expertise and an editorial eye, results
+        in images that tell compelling stories and leave a lasting impression.
+      </p>
+    </div>
+
+    <figure class="about__portrait" data-about-portrait>
+      <Image
+        src={kathrin}
+        alt="Portrait of Kathrin Ledwon, destination wedding photographer, holding a camera"
+        widths={[480, 720, 960, 1200]}
+        sizes="(min-width: 980px) 480px, 90vw"
+        loading="lazy"
+        format="webp"
+        quality={86}
+      />
+    </figure>
+
+    <ul role="list" class="about__stats" data-about-stats>
+      {site.stats.map((stat) => (
+        <li class="about__stat">
+          <span
+            class="about__stat-value"
+            data-counter
+            data-counter-target={stat.value}
+            data-counter-suffix={stat.suffix}
+          >
+            0{stat.suffix}
+          </span>
+          <span class="about__stat-label t-mono">{stat.label}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<script>
+  import "./About.client";
+</script>

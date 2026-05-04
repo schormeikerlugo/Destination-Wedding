@@ -1,0 +1,88 @@
+---
+import "./Gallery.css";
+import { Image } from "astro:assets";
+import { gallery } from "@data/gallery";
+import Pill from "@ui/Pill.astro";
+
+// Show first 9 in the grid; the rest are reachable via lightbox navigation
+const featured = gallery.slice(0, 9);
+const allItems = gallery;
+---
+
+<section class="work section" id="work" aria-labelledby="work-title">
+  <div class="container work__header">
+    <div>
+      <p class="t-mono">04 / Portfolio</p>
+      <h2 id="work-title" class="work__title t-display-bold" data-work-title>
+        <span class="work__title-line"><span>Selected</span></span>
+        <span class="work__title-line"><span>Work.</span></span>
+      </h2>
+    </div>
+    <div class="work__intro">
+      <p class="t-body">
+        Each photograph in this collection has been carefully curated to tell
+        a story, evoke emotion and capture the beauty of the day.
+      </p>
+      <Pill href="#cta" variant="outline" size="sm" arrow="right">See More</Pill>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="work__grid" data-work-grid>
+      {featured.map((img, i) => (
+        <figure class="work__item" data-work-item data-index={i} data-caption={img.caption}>
+          <button type="button" class="work__zoom" data-lightbox-trigger aria-label={`View photo: ${img.alt}`}>
+            <Image
+              src={img.image}
+              alt={img.alt}
+              widths={[400, 600, 900, 1200]}
+              sizes="(min-width: 980px) 33vw, (min-width: 600px) 50vw, 100vw"
+              loading="lazy"
+              format="webp"
+              quality={82}
+            />
+            <span class="work__overlay" aria-hidden="true">
+              <span class="t-mono work__overlay-tag">{img.moment}</span>
+              <span class="work__overlay-cap">{img.caption}</span>
+              <span class="work__overlay-cta t-mono">See Details ↗</span>
+            </span>
+          </button>
+          <figcaption class="sr-only">{img.alt}</figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+
+  <!-- Lightbox carries every gallery item, even ones outside the 9 featured -->
+  <div class="work__lightbox" data-lightbox aria-hidden="true" role="dialog" aria-label="Photo viewer">
+    <button type="button" class="work__lightbox-close" data-lightbox-close aria-label="Close">×</button>
+    <button type="button" class="work__lightbox-prev" data-lightbox-prev aria-label="Previous">←</button>
+    <button type="button" class="work__lightbox-next" data-lightbox-next aria-label="Next">→</button>
+    <figure class="work__lightbox-figure">
+      <img alt="" data-lightbox-img />
+      <figcaption data-lightbox-caption></figcaption>
+    </figure>
+
+    <!-- Hidden registry of all images so lightbox can navigate beyond 9 -->
+    <div class="sr-only" data-lightbox-pool>
+      {allItems.map((img, i) => (
+        <Image
+          src={img.image}
+          alt={img.alt}
+          width={1600}
+          height={img.ratio === "landscape" ? 1067 : img.ratio === "square" ? 1600 : 2000}
+          loading="lazy"
+          format="webp"
+          quality={82}
+          data-pool-index={i}
+          data-pool-caption={img.caption}
+          data-pool-moment={img.moment}
+        />
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import "./Gallery.client";
+</script>

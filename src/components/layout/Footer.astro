@@ -1,0 +1,43 @@
+---
+import "./Footer.css";
+import { site } from "@data/site";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <hr class="hairline" />
+
+  <div class="container site-footer__nav">
+    <ul role="list" class="site-footer__links">
+      {site.nav.map((n) => (
+        <li><a href={n.href}>{n.label}</a></li>
+      ))}
+    </ul>
+    <ul role="list" class="site-footer__social">
+      {site.social.map((s) => (
+        <li>
+          <a href={s.href} target="_blank" rel="noopener noreferrer">
+            {s.label}<span aria-hidden="true"> ↗</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <hr class="hairline" />
+
+  <div class="container site-footer__bottom">
+    <span class="t-mono">Let’s connect</span>
+    <a class="site-footer__email" href={`mailto:${site.email}`}>
+      drop me an email at:
+      <span>{site.email}</span>
+    </a>
+    <span class="t-mono site-footer__brand-mark">{site.name}</span>
+  </div>
+
+  <div class="container site-footer__copy">
+    <span class="t-mono text-muted">© {year} {site.name}. All rights reserved.</span>
+    <span class="t-mono text-muted">{site.location}</span>
+  </div>
+</footer>

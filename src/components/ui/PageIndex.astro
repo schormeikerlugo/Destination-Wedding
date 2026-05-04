@@ -1,0 +1,320 @@
+---
+interface Section {
+  id: string;
+  label: string;
+}
+
+interface Props {
+  sections: Section[];
+}
+
+const { sections } = Astro.props;
+---
+
+<aside class="page-index" aria-label="Section index" data-page-index>
+  <ul role="list" class="page-index__list">
+    {sections.map((s, i) => (
+      <li class="page-index__item" data-page-item data-target={s.id}>
+        <span class="page-index__sub" aria-hidden="true">
+          <span class="page-index__sub-mark"></span>
+          <span class="page-index__sub-mark"></span>
+          <span class="page-index__sub-mark"></span>
+        </span>
+        <a href={`#${s.id}`} class="page-index__link" data-page-link data-target={s.id}>
+          <span class="page-index__num">{String(i + 1).padStart(2, "0")}</span>
+          <span class="page-index__label">{s.label}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</aside>
+
+<script>
+  import { scrollTo } from "@lib/lenis";
+
+  const links = document.querySelectorAll<HTMLAnchorElement>("[data-page-link]");
+  const items = Array.from(
+    document.querySelectorAll<HTMLElement>("[data-page-item]")
+  );
+  const sectionsList = items
+    .map((item) => {
+      const id = item.dataset.target;
+      const el = id ? document.getElementById(id) : null;
+      return el ? { item, el } : null;
+    })
+    .filter((x): x is { item: HTMLElement; el: HTMLElement } => !!x);
+
+  links.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      const id = link.dataset.target;
+      if (!id) return;
+      e.preventDefault();
+      scrollTo(`#${id}`, -40);
+    });
+  });
+
+  /**
+   * Set scroll-driven state on each item:
+   *  - data-state: "past" | "active" | "future"
+   *  - --progress: 0..1 (only meaningful for the active item)
+   * The CSS reads these values to grow the main tick and reveal sub-marks.
+   */
+  let raf = 0;
+  function update() {
+    raf = 0;
+    const viewportH = window.innerHeight;
+    // The "active line" is the horizontal centre of the viewport.
+    const activeY = viewportH * 0.5;
+
+    let activeIdx = -1;
+    sectionsList.forEach(({ el }, i) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top <= activeY && rect.bottom > activeY) {
+        activeIdx = i;
+      }
+    });
+
+    // If nothing is straddling the centre, pick the closest one above it.
+    if (activeIdx === -1) {
+      for (let i = sectionsList.length - 1; i >= 0; i--) {
+        const entry = sectionsList[i];
+        if (!entry) continue;
+        const rect = entry.el.getBoundingClientRect();
+        if (rect.top <= activeY) {
+          activeIdx = i;
+          break;
+        }
+      }
+    }
+
+    sectionsList.forEach(({ item, el }, i) => {
+      let state: "past" | "active" | "future" = "future";
+      let progress = 0;
+
+      if (i < activeIdx) state = "past";
+      else if (i === activeIdx) {
+        state = "active";
+        const rect = el.getBoundingClientRect();
+        const total = rect.height;
+        const travelled = Math.max(0, activeY - rect.top);
+        progress = total > 0 ? Math.min(1, Math.max(0, travelled / total)) : 0;
+      }
+
+      item.dataset.state = state;
+      item.style.setProperty("--progress", progress.toFixed(3));
+
+      const link = item.querySelector<HTMLAnchorElement>("[data-page-link]");
+      link?.classList.toggle("is-active", state === "active");
+    });
+  }
+
+  function onScroll() {
+    if (raf) return;
+    raf = requestAnimationFrame(update);
+  }
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  // Run once on load.
+  update();
+</script>
+
+<style>
+  .page-index {
+    position: fixed;
+    top: 50%;
+    right: clamp(1rem, 1.4vw, 1.5rem);
+    transform: translateY(-50%);
+    z-index: var(--z-sticky);
+  }
+
+  .page-index__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .page-index__item {
+    position: relative;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  /* Main tick — to the left of the number */
+  .page-index__item::before {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 1px;
+    background: var(--c-line);
+    margin-right: var(--s-8);
+    transition:
+      width var(--t-base) var(--ease-out),
+      background var(--t-base) var(--ease-out);
+    pointer-events: none;
+  }
+
+  /* Past sections — main tick fully expanded and inked */
+  .page-index__item[data-state="past"]::before {
+    width: 18px;
+    background: var(--c-ink);
+  }
+
+  /* Active section — width tied to the scroll progress */
+  .page-index__item[data-state="active"]::before {
+    width: calc(10px + 8px * var(--progress, 0));
+    background: var(--c-ink);
+  }
+
+  /* Hover affordance on any item */
+  .page-index__item:hover::before {
+    width: 18px;
+    background: var(--c-ink);
+  }
+
+  /* Sub-ticks container — sits between this item and the next one */
+  .page-index__sub {
+    position: absolute;
+    top: calc(100% + 1px);
+    right: calc(28px + var(--s-8) + 5px);
+    width: 5px;
+    height: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    pointer-events: none;
+  }
+
+  .page-index__item:last-child .page-index__sub {
+    display: none;
+  }
+
+  .page-index__sub-mark {
+    display: block;
+    width: 5px;
+    height: 1px;
+    background: var(--c-line-soft);
+    transition:
+      background var(--t-base) var(--ease-out),
+      width var(--t-base) var(--ease-out);
+  }
+
+  /* Past items — every sub-mark fully filled */
+  .page-index__item[data-state="past"] .page-index__sub-mark {
+    background: var(--c-ink);
+  }
+
+  /* Active item — sub-marks reveal progressively as scroll advances.
+     Each mark turns ink once --progress crosses its threshold (0.25, 0.5, 0.75). */
+  .page-index__item[data-state="active"] .page-index__sub-mark:nth-child(1) {
+    background: color-mix(
+      in srgb,
+      var(--c-ink) calc(clamp(0, (var(--progress, 0) - 0) * 4, 1) * 100%),
+      var(--c-line-soft)
+    );
+  }
+
+  .page-index__item[data-state="active"] .page-index__sub-mark:nth-child(2) {
+    background: color-mix(
+      in srgb,
+      var(--c-ink) calc(clamp(0, (var(--progress, 0) - 0.33) * 4, 1) * 100%),
+      var(--c-line-soft)
+    );
+  }
+
+  .page-index__item[data-state="active"] .page-index__sub-mark:nth-child(3) {
+    background: color-mix(
+      in srgb,
+      var(--c-ink) calc(clamp(0, (var(--progress, 0) - 0.66) * 4, 1) * 100%),
+      var(--c-line-soft)
+    );
+  }
+
+  .page-index__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    font-family: var(--f-sans);
+    font-size: var(--fs-11);
+    font-weight: 500;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    font-feature-settings: "tnum";
+    color: var(--c-line-strong);
+    border: 1px solid transparent;
+    border-radius: 999px;
+    cursor: pointer;
+    transition:
+      color var(--t-base) var(--ease-out),
+      border-color var(--t-base) var(--ease-out),
+      background var(--t-base) var(--ease-out);
+  }
+
+  .page-index__link:hover,
+  .page-index__link:focus-visible {
+    color: var(--c-ink);
+  }
+
+  .page-index__item[data-state="past"] .page-index__link {
+    color: var(--c-muted);
+  }
+
+  .page-index__link.is-active {
+    color: var(--c-ink);
+    border-color: var(--c-ink);
+  }
+
+  .page-index__num {
+    pointer-events: none;
+  }
+
+  .page-index__label {
+    position: absolute;
+    right: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%) translateX(8px);
+    white-space: nowrap;
+    font-size: var(--fs-11);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-widest);
+    color: var(--c-ink);
+    background: var(--c-white);
+    border: 1px solid var(--c-line-soft);
+    padding: 6px 10px;
+    border-radius: var(--r-pill);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity var(--t-base) var(--ease-out),
+      transform var(--t-base) var(--ease-out);
+    box-shadow: 0 4px 12px -6px rgba(10, 10, 10, 0.12);
+  }
+
+  .page-index__link:hover .page-index__label,
+  .page-index__link:focus-visible .page-index__label {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+
+  @media (max-width: 1240px) {
+    .page-index { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .page-index__link,
+    .page-index__label,
+    .page-index__item::before,
+    .page-index__sub-mark {
+      transition: none;
+    }
+  }
+</style>

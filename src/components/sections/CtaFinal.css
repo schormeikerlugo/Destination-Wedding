@@ -1,0 +1,105 @@
+.cta-final {
+  background: var(--c-white);
+  padding-block: clamp(5rem, 10vw, 9rem);
+}
+
+.cta-final__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 5vw, 4rem);
+}
+
+.cta-final__title {
+  font-weight: 600;
+  font-size: clamp(3rem, 9.5vw, 9.5rem);
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+  margin: 0;
+  color: var(--c-ink);
+}
+
+.cta-final__line {
+  display: block;
+  overflow: hidden;
+  padding-block: 0.04em;
+}
+
+.cta-final__line [data-word] {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.cta-final__line .t-italic {
+  font-style: italic;
+  font-weight: 500;
+}
+
+.cta-final__symbol {
+  font-style: normal;
+  margin-left: 0.4em;
+  font-weight: 200;
+  display: inline-block;
+}
+
+.cta-final__bottom {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2rem);
+  border-top: 1px solid var(--c-line-soft);
+  padding-top: clamp(1.5rem, 3vw, 2rem);
+}
+
+.cta-final__email {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  color: var(--c-ink);
+}
+
+.cta-final__email .t-mono {
+  color: var(--c-fg-muted);
+}
+
+.cta-final__email-addr {
+  font-family: var(--f-sans);
+  font-weight: 600;
+  font-size: clamp(var(--fs-18), 2vw, var(--fs-24));
+  letter-spacing: var(--tracking-tight);
+  border-bottom: 1px solid var(--c-line);
+  transition: border-color var(--t-base) var(--ease-out);
+}
+
+.cta-final__email:hover .cta-final__email-addr {
+  border-color: var(--c-ink);
+}
+
+.cta-final__top {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  border: 1px solid var(--c-ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--c-ink);
+  font-size: 1.4rem;
+  transition:
+    transform var(--t-base) var(--ease-out),
+    background var(--t-base) var(--ease-out),
+    color var(--t-base) var(--ease-out);
+}
+
+.cta-final__top:hover {
+  background: var(--c-ink);
+  color: var(--c-white);
+  transform: translateY(-3px);
+}
+
+@media (max-width: 720px) {
+  .cta-final__bottom {
+    grid-template-columns: 1fr;
+    gap: var(--s-16);
+  }
+}

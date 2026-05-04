@@ -1,0 +1,162 @@
+@import "modern-normalize";
+@import "@fontsource-variable/inter-tight/index.css";
+
+@import "./tokens.css";
+@import "./reset.css";
+@import "./typography.css";
+
+/* =========================================================
+   Layout primitives
+   ========================================================= */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+}
+
+.section {
+  padding-block: var(--section-py);
+  position: relative;
+}
+
+.section--soft { background: var(--c-bg-soft); }
+.section--paper { background: var(--c-bg-paper); }
+.section--ink {
+  background: var(--c-ink);
+  color: var(--c-white);
+}
+
+/* Hairline divider used between sections */
+.hairline {
+  height: 1px;
+  background: var(--c-line-soft);
+  border: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.hairline--ink { background: var(--c-line); }
+
+/* =========================================================
+   Pill — unified button system (no rose)
+   ========================================================= */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-10);
+  padding: 0.78rem 1.4rem;
+  border-radius: var(--r-pill);
+  font-size: var(--fs-13);
+  font-weight: 500;
+  letter-spacing: 0;
+  border: 1px solid var(--c-ink);
+  background: transparent;
+  color: var(--c-ink);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition:
+    background var(--t-base) var(--ease-out),
+    color var(--t-base) var(--ease-out),
+    transform var(--t-base) var(--ease-out),
+    border-color var(--t-base) var(--ease-out);
+}
+
+.pill--filled {
+  background: var(--c-ink);
+  color: var(--c-white);
+}
+
+.pill--ghost {
+  border-color: var(--c-line);
+  color: var(--c-ink);
+}
+
+.pill--invert {
+  background: var(--c-white);
+  color: var(--c-ink);
+  border-color: var(--c-white);
+}
+
+.pill--sm {
+  padding: 0.55rem 1rem;
+  font-size: var(--fs-12);
+}
+
+.pill:hover,
+.pill:focus-visible {
+  background: var(--c-ink);
+  color: var(--c-white);
+  border-color: var(--c-ink);
+}
+
+.pill--filled:hover,
+.pill--filled:focus-visible {
+  background: var(--c-white);
+  color: var(--c-ink);
+}
+
+.pill--invert:hover,
+.pill--invert:focus-visible {
+  background: var(--c-ink);
+  color: var(--c-white);
+  border-color: var(--c-ink);
+}
+
+.pill .arrow {
+  display: inline-flex;
+  align-items: center;
+  transition: transform var(--t-base) var(--ease-out);
+}
+
+.pill:hover .arrow,
+.pill:focus-visible .arrow {
+  transform: translateX(4px);
+}
+
+.pill[data-arrow="down"]:hover .arrow { transform: translateY(4px); }
+.pill[data-arrow="up"]:hover .arrow { transform: translateY(-4px); }
+.pill[data-arrow="diagonal"]:hover .arrow { transform: translate(4px, -4px); }
+
+/* =========================================================
+   Reveal helpers
+   ========================================================= */
+[data-reveal],
+[data-reveal-line] > *,
+[data-reveal-stagger] > * {
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-reveal-line] > *,
+  [data-reveal-stagger] > * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* =========================================================
+   Misc
+   ========================================================= */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+[data-scroll-root] {
+  position: relative;
+}
+
+::selection {
+  background: var(--c-ink);
+  color: var(--c-white);
+}

@@ -1,0 +1,50 @@
+---
+import "./Faq.css";
+import { faq } from "@data/faq";
+---
+
+<section class="faq section" id="faq" aria-labelledby="faq-title">
+  <div class="container faq__grid">
+    <header class="faq__header">
+      <p class="t-mono">06 / FAQ</p>
+      <h2 id="faq-title" class="faq__title t-display-bold" data-faq-title>
+        <span class="faq__title-line"><span>The questions</span></span>
+        <span class="faq__title-line"><span>I hear most.</span></span>
+      </h2>
+      <p class="t-body faq__lead">
+        A few of the most common questions — if anything is missing, drop me a
+        note below and I’ll reply within a day.
+      </p>
+    </header>
+
+    <ul role="list" class="faq__list" data-faq-list>
+      {faq.map((item, i) => (
+        <li class:list={["faq-item", i === 0 && "is-open"]} data-faq-item>
+          <button
+            type="button"
+            class="faq-item__btn"
+            aria-expanded={i === 0 ? "true" : "false"}
+            aria-controls={`faq-${i}`}
+            data-faq-toggle
+          >
+            <span class="faq-item__num">{String(i + 1).padStart(2, "0")}</span>
+            <span class="faq-item__q">{item.q}</span>
+            <span class="faq-item__icon" aria-hidden="true">
+              <span></span>
+              <span class="faq-item__icon-vert"></span>
+            </span>
+          </button>
+          <div id={`faq-${i}`} class="faq-item__panel" data-faq-panel>
+            <div class="faq-item__panel-inner">
+              <p>{item.a}</p>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<script>
+  import "./Faq.client";
+</script>
