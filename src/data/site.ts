@@ -27,10 +27,10 @@ export const site = {
   /** Scroll-spy sections shown in PageIndex */
   pageIndex: [
     { id: "hero", label: "Intro" },
+    { id: "work", label: "Work" },
     { id: "manifest", label: "Manifest" },
     { id: "about", label: "About" },
     { id: "studio", label: "Studio" },
-    { id: "work", label: "Work" },
     { id: "craft", label: "Craft" },
     { id: "investment", label: "Investment" },
     { id: "faq", label: "FAQ" },
