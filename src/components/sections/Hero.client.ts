@@ -7,9 +7,9 @@ if (!prefersReducedMotion()) {
   // Entry timeline
   const tl = gsap.timeline({ defaults: { ease: "expo.out" }, delay: 0.2 });
 
-  tl.from("[data-hero-media] .hero__media-img", {
+  // Only animate the first (active) slide on entry to avoid conflicting with the cross-fade
+  tl.from('[data-hero-slide][data-index="0"]', {
     scale: 1.08,
-    opacity: 0,
     duration: 1.6,
     ease: "expo.out",
   });
@@ -41,7 +41,7 @@ if (!prefersReducedMotion()) {
   // Loops + parallax
   const mm = gsap.matchMedia();
   mm.add("(min-width: 720px)", () => {
-    // Photo parallax — subtle vertical drift while scrolling
+    // Photo parallax — applies to all stacked slides so the active one always drifts
     gsap.to("[data-hero-media] .hero__media-img", {
       yPercent: -8,
       ease: "none",
@@ -92,4 +92,59 @@ if (!prefersReducedMotion()) {
       document.removeEventListener("pointerleave", onLeave);
     };
   });
+}
+
+// =========================================================
+// Hero carousel — cross-fade between slides every 6s.
+// Pauses while the tab is hidden. Disabled if user prefers reduced motion.
+// =========================================================
+{
+  const slides = Array.from(
+    document.querySelectorAll<HTMLImageElement>("[data-hero-slide]")
+  );
+
+  if (slides.length > 1 && !prefersReducedMotion()) {
+    const ACTIVE = "hero__media-img--active";
+    const INTERVAL_MS = 6000;
+    let current = slides.findIndex((el) => el.classList.contains(ACTIVE));
+    if (current < 0) current = 0;
+
+    let timerId: number | null = null;
+
+    const advance = () => {
+      const next = (current + 1) % slides.length;
+      const a = slides[current];
+      const b = slides[next];
+      a.classList.remove(ACTIVE);
+      a.setAttribute("aria-hidden", "true");
+      b.classList.add(ACTIVE);
+      b.setAttribute("aria-hidden", "false");
+      current = next;
+    };
+
+    const start = () => {
+      if (timerId !== null) return;
+      timerId = window.setInterval(advance, INTERVAL_MS);
+    };
+
+    const stop = () => {
+      if (timerId === null) return;
+      clearInterval(timerId);
+      timerId = null;
+    };
+
+    start();
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) stop();
+      else start();
+    });
+
+    // Cleanup on Astro view transitions / SPA-like navigation
+    document.addEventListener(
+      "astro:before-swap",
+      () => stop(),
+      { once: true }
+    );
+  }
 }

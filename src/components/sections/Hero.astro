@@ -3,22 +3,50 @@ import "./Hero.css";
 import { Image } from "astro:assets";
 import Pill from "@ui/Pill.astro";
 import heroPhoto from "@assets/hero/lake-kiss.jpg";
+import heroPhoto2 from "@assets/hero/dsc1306.jpg";
+import heroPhoto3 from "@assets/hero/dsc4673.jpg";
+import heroPhoto4 from "@assets/hero/dsc6020.jpg";
+
+const slides = [
+  {
+    src: heroPhoto,
+    alt: "Bride and groom kissing on a balustrade overlooking the Italian lakes",
+  },
+  {
+    src: heroPhoto2,
+    alt: "Editorial wedding moment captured in soft natural light",
+  },
+  {
+    src: heroPhoto3,
+    alt: "Couple sharing an intimate moment on their wedding day",
+  },
+  {
+    src: heroPhoto4,
+    alt: "Quiet editorial portrait from a destination wedding",
+  },
+];
 ---
 
 <section class="hero" id="hero" aria-labelledby="hero-title">
-  <!-- Full-bleed background photo -->
+  <!-- Full-bleed background photo (carousel: 3 slides, 6s cross-fade) -->
   <div class="hero__media" data-hero-media>
-    <Image
-      src={heroPhoto}
-      alt="Bride and groom kissing on a balustrade overlooking the Italian lakes"
-      class="hero__media-img"
-      widths={[960, 1280, 1600, 2000, 2400]}
-      sizes="100vw"
-      loading="eager"
-      decoding="async"
-      format="webp"
-      quality={88}
-    />
+    {slides.map((slide, i) => (
+      <Image
+        src={slide.src}
+        alt={slide.alt}
+        class:list={["hero__media-img", i === 0 && "hero__media-img--active"]}
+        widths={[960, 1280, 1600, 2000, 2400]}
+        sizes="100vw"
+        loading={i === 0 ? "eager" : "lazy"}
+        decoding="async"
+        format="webp"
+        quality={88}
+        data-hero-slide
+        data-index={i}
+        aria-hidden={i === 0 ? "false" : "true"}
+        {...(i === 0 ? { fetchpriority: "high" } : {})}
+      />
+    ))}
     <div class="hero__media-overlay" aria-hidden="true"></div>
     <svg class="hero__grain" preserveAspectRatio="none" aria-hidden="true">
       <filter id="hero-grain">
