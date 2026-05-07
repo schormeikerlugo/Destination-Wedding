@@ -161,3 +161,202 @@
   background: var(--c-ink);
   color: var(--c-white);
 }
+
+/* =========================================================
+   Mobile centering
+   En pantallas pequeñas (<= 720px) centramos los bloques de texto
+   y cabeceras de las secciones para una lectura más cómoda.
+   Las imágenes y grids mantienen su flujo natural.
+   ========================================================= */
+@media (max-width: 720px) {
+  /* Cabeceras de sección — eyebrow + título + intro */
+  .about__header,
+  .faq__header,
+  .invest__header,
+  .manifest__grid,
+  .portfolio__header,
+  .craft__lead {
+    text-align: center;
+    justify-items: center;
+  }
+
+  /* Títulos: centramos el texto y las líneas (que usan overflow:hidden) */
+  .about__title,
+  .craft__title,
+  .faq__title,
+  .invest__title,
+  .manifest__title,
+  .portfolio__title,
+  .studio__title {
+    text-align: center;
+  }
+
+  /* Líneas internas de los títulos (con span) */
+  .about__title-line,
+  .craft__title-line,
+  .faq__title-line,
+  .invest__title-line,
+  .manifest__line,
+  .portfolio__title-line,
+  .studio__title-line,
+  .work__title-line {
+    text-align: center;
+  }
+
+  /* Bloques de texto introductorios */
+  .about__copy,
+  .craft__lead,
+  .faq__lead,
+  .invest__intro,
+  .portfolio__intro,
+  .studio__copy {
+    text-align: center;
+    align-items: center;
+    margin-inline: auto;
+  }
+
+  /* Párrafos dentro del header de Manifest */
+  .manifest__col--meta,
+  .manifest__col--lead,
+  .manifest__col--lead .t-body,
+  .manifest__cta {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin-inline: auto;
+  }
+
+  /* Pills y CTAs dentro de cabeceras: centrados horizontalmente */
+  .about__copy .pill,
+  .craft__lead .pill,
+  .faq__lead .pill,
+  .invest__intro .pill,
+  .portfolio__intro .pill,
+  .studio__copy .pill,
+  .manifest__cta .pill {
+    align-self: center;
+  }
+
+  /* Eyebrows / mono labels */
+  .about__header .t-mono,
+  .craft__lead .t-mono,
+  .faq__header .t-mono,
+  .invest__header .t-mono,
+  .portfolio__header .t-mono,
+  .studio__copy .t-mono {
+    text-align: center;
+  }
+
+  /* Hero — centrado del bloque de copy y CTAs */
+  .hero__lead-card,
+  .hero__lead-text {
+    text-align: center;
+    align-items: center;
+    margin-inline: auto;
+  }
+  .hero__cta {
+    justify-content: center;
+  }
+
+  /* Counter / badges (Portfolio "60 photographs") centrados */
+  .portfolio__count,
+  .portfolio__intro {
+    align-self: center;
+  }
+
+  /* Cards de Investment: contenido centrado en mobile */
+  .invest-card {
+    text-align: center;
+    align-items: center;
+  }
+  .invest-card__cta,
+  .invest-card__list {
+    justify-content: center;
+    align-self: center;
+  }
+  .invest-card__price {
+    justify-content: center;
+  }
+
+  /* Faq lead bottom cta — Pill centrado */
+  .faq__lead .pill,
+  .faq__lead {
+    align-self: center;
+  }
+
+  /* About stats centradas */
+  .about__stats,
+  .about__stat {
+    text-align: center;
+    align-items: center;
+  }
+  .about__stat-value,
+  .about__stat-label {
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  /* Studio copy CTA */
+  .studio__copy .pill {
+    align-self: center;
+  }
+
+  /* CtaFinal centrado */
+  .cta-final__title,
+  .cta-final__line,
+  .cta-final__bottom,
+  .cta-final__email,
+  .cta-final__inner {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
+  .cta-final__bottom {
+    flex-direction: column;
+    gap: var(--s-16);
+  }
+
+  /* VideoBand meta centrado */
+  .video-band__meta {
+    text-align: center;
+    justify-content: center;
+  }
+
+  /* Hero — eyebrow, location, título, lead card y scroll centrados */
+  .hero__top {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .hero__eyebrow,
+  .hero__location {
+    justify-content: center;
+    text-align: center;
+  }
+  .hero__center {
+    justify-content: center;
+  }
+  .hero__title {
+    text-align: center;
+    width: 100%;
+  }
+  .hero__title-line {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+  }
+  .hero__title-line > span {
+    display: inline-block;
+  }
+  .hero__bottom {
+    text-align: center;
+    justify-items: center;
+  }
+  .hero__scroll {
+    justify-self: center !important;
+    margin-top: var(--s-16);
+  }
+  .hero__lead-card {
+    margin-inline: auto;
+  }
+}

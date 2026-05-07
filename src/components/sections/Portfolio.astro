@@ -1,0 +1,181 @@
+---
+import "./Portfolio.css";
+import { Image } from "astro:assets";
+import { portfolio, NUM_COLUMNS } from "@data/portfolio";
+
+const INITIAL_COUNT = 20;
+const total = portfolio.length;
+
+// Agrupa items por su columna asignada en build, preservando el índice global
+// para que data-index/lightbox funcionen igual.
+const items = portfolio.map((img, i) => ({ ...img, globalIndex: i }));
+const columns = Array.from({ length: NUM_COLUMNS }, (_, c) =>
+  items.filter((it) => it.column === c + 1),
+);
+
+// Repartimos el INITIAL_COUNT entre las columnas para que TODAS sean
+// visibles desde el inicio (sino sólo se verían las primeras columnas).
+// Cada columna muestra las primeras N imágenes en su orden interno.
+const perColInitial = Math.ceil(INITIAL_COUNT / NUM_COLUMNS);
+
+// Mapa globalIndex -> visible-inicialmente
+const initiallyVisible = new Set<number>();
+columns.forEach((col) => {
+  col.slice(0, perColInitial).forEach((it) => {
+    initiallyVisible.add(it.globalIndex);
+  });
+});
+const visibleInitial = initiallyVisible.size;
+---
+
+<section
+  class="portfolio section"
+  id="portfolio"
+  aria-labelledby="portfolio-title"
+>
+  <div class="container portfolio__header">
+    <div>
+      <p class="t-mono">04 / Portfolio · Mosaic Edition</p>
+      <h2
+        id="portfolio-title"
+        class="portfolio__title"
+        data-portfolio-title
+      >
+        <span class="portfolio__title-line"><span>Selected</span></span>
+        <span class="portfolio__title-line"><span>Frames.</span></span>
+      </h2>
+    </div>
+    <div class="portfolio__intro">
+      <p class="t-body">
+        A wider archive of frames captured across continents — quiet portraits,
+        ceremonies, candid joy and aerial perspectives. Browse the mosaic, open
+        any frame in detail.
+      </p>
+      <span class="portfolio__count">
+        <strong>{total}</strong> <span>Photographs</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="portfolio__wide">
+    <div
+      class="portfolio__grid"
+      data-portfolio-grid
+      data-initial-count={INITIAL_COUNT}
+    >
+      {
+        columns.map((col, colIdx) => (
+          <div class="portfolio__col" data-col-index={colIdx}>
+            {col.map((img) => (
+              <figure
+                class="portfolio__item"
+                data-index={img.globalIndex}
+                data-hidden={
+                  initiallyVisible.has(img.globalIndex) ? undefined : "true"
+                }
+              >
+                <button
+                  type="button"
+                  class="portfolio__zoom"
+                  data-portfolio-trigger
+                  aria-label={`View photo ${img.globalIndex + 1} of ${total}`}
+                >
+                  <Image
+                    src={img.image}
+                    alt={img.alt}
+                    widths={[400, 600, 900]}
+                    sizes="(min-width: 1280px) 25vw, (min-width: 1100px) 33vw, (min-width: 720px) 50vw, 100vw"
+                    loading="lazy"
+                    decoding="async"
+                    format="webp"
+                    quality={82}
+                  />
+                </button>
+              </figure>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="portfolio__toggle-wrap">
+      <span
+        class="portfolio__toggle-meta"
+        data-portfolio-toggle-meta
+        aria-live="polite"
+      >
+        Showing {visibleInitial} of {total}
+      </span>
+      <button
+        type="button"
+        class="pill"
+        data-portfolio-toggle
+        aria-expanded="false"
+        aria-controls="portfolio-grid"
+      >
+        <span data-portfolio-toggle-label>Show all {total} photos</span>
+        <span class="arrow" aria-hidden="true">↓</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Lightbox -->
+  <div
+    class="portfolio__lightbox"
+    data-portfolio-lightbox
+    aria-hidden="true"
+    role="dialog"
+    aria-label="Photo viewer"
+  >
+    <button
+      type="button"
+      class="portfolio__lightbox-close"
+      data-portfolio-lightbox-close
+      aria-label="Close"
+    >
+      ×
+    </button>
+    <button
+      type="button"
+      class="portfolio__lightbox-prev"
+      data-portfolio-lightbox-prev
+      aria-label="Previous"
+    >
+      ←
+    </button>
+    <button
+      type="button"
+      class="portfolio__lightbox-next"
+      data-portfolio-lightbox-next
+      aria-label="Next"
+    >
+      →
+    </button>
+    <figure class="portfolio__lightbox-figure">
+      <img alt="" data-portfolio-lightbox-img />
+      <figcaption data-portfolio-lightbox-caption></figcaption>
+    </figure>
+
+    <!-- Hidden registry: every item available in the lightbox -->
+    <div class="sr-only">
+      {
+        portfolio.map((img, i) => (
+          <Image
+            src={img.image}
+            alt={img.alt}
+            width={1600}
+            height={img.ratio === "landscape" ? 1067 : 2000}
+            loading="lazy"
+            format="webp"
+            quality={82}
+            data-portfolio-pool-index={i}
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  import "./Portfolio.client";
+</script>

@@ -12,71 +12,23 @@ if (!reduce) {
     duration: 1.1,
     stagger: 0.1,
     ease: "expo.out",
-    scrollTrigger: { trigger: "[data-invest-title]", start: "top 85%", once: true },
+    scrollTrigger: {
+      trigger: "[data-invest-title]",
+      start: "top 85%",
+      once: true,
+    },
   });
 
-  gsap.from("[data-row]", {
-    y: 24,
+  gsap.from("[data-invest-card]", {
+    y: 32,
     opacity: 0,
-    duration: 0.8,
-    stagger: 0.06,
+    duration: 0.9,
+    stagger: 0.07,
     ease: "expo.out",
-    scrollTrigger: { trigger: "[data-invest-table]", start: "top 80%", once: true },
+    scrollTrigger: {
+      trigger: "[data-invest-grid]",
+      start: "top 80%",
+      once: true,
+    },
   });
 }
-
-// Accordion
-const rows = document.querySelectorAll<HTMLElement>("[data-row]");
-
-rows.forEach((row) => {
-  const btn = row.querySelector<HTMLButtonElement>("[data-row-toggle]");
-  const panel = row.querySelector<HTMLElement>("[data-row-panel]");
-  if (!btn || !panel) return;
-
-  panel.style.height = "0";
-
-  btn.addEventListener("click", () => {
-    const isOpen = row.classList.contains("is-open");
-    const inner = panel.firstElementChild as HTMLElement | null;
-    if (!inner) return;
-
-    if (isOpen) {
-      panel.style.height = `${panel.scrollHeight}px`;
-      requestAnimationFrame(() => {
-        row.classList.remove("is-open");
-        btn.setAttribute("aria-expanded", "false");
-        if (reduce) {
-          panel.style.height = "0";
-        } else {
-          gsap.to(panel, { height: 0, duration: 0.5, ease: "expo.out" });
-        }
-      });
-    } else {
-      row.classList.add("is-open");
-      btn.setAttribute("aria-expanded", "true");
-      const target = inner.scrollHeight;
-      if (reduce) {
-        panel.style.height = "auto";
-      } else {
-        gsap.to(panel, {
-          height: target,
-          duration: 0.55,
-          ease: "expo.out",
-          onComplete: () => {
-            panel.style.height = "auto";
-          },
-        });
-        // Reveal the media image with a small delay so it lands after the
-        // panel has started opening — adds a layered, editorial entrance.
-        const media = row.querySelector<HTMLElement>("[data-row-media]");
-        if (media) {
-          gsap.fromTo(
-            media,
-            { opacity: 0, y: 14 },
-            { opacity: 1, y: 0, duration: 0.7, delay: 0.15, ease: "expo.out" }
-          );
-        }
-      }
-    }
-  });
-});

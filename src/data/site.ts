@@ -19,7 +19,7 @@ export const site = {
     { label: "Vimeo", href: "https://vimeo.com/" },
   ],
   nav: [
-    { label: "Work", href: "#work" },
+    { label: "Portfolio", href: "#portfolio" },
     { label: "About", href: "#about" },
     { label: "Studio", href: "#studio" },
     { label: "Investment", href: "#investment" },
@@ -27,8 +27,8 @@ export const site = {
   /** Scroll-spy sections shown in PageIndex */
   pageIndex: [
     { id: "hero", label: "Intro" },
-    { id: "work", label: "Work" },
     { id: "manifest", label: "Manifest" },
+    { id: "portfolio", label: "Portfolio" },
     { id: "about", label: "About" },
     { id: "studio", label: "Studio" },
     { id: "craft", label: "Craft" },

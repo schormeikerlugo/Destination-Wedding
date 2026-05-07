@@ -1,0 +1,302 @@
+/* =========================================================
+   Portfolio — Mosaic Edition (CSS columns / masonry vertical)
+   60 fotos, 4 columnas balanceadas, expand/collapse
+   ========================================================= */
+.portfolio {
+  background: var(--c-white);
+  border-top: 1px solid var(--c-line-soft);
+  position: relative;
+}
+
+/* Header */
+.portfolio__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: end;
+  margin-bottom: clamp(2rem, 5vw, 4rem);
+}
+
+.portfolio__title {
+  font-weight: 700;
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  line-height: 0.96;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  margin: var(--s-12) 0 0 0;
+  color: var(--c-ink);
+}
+
+.portfolio__title-line {
+  display: block;
+  overflow: hidden;
+  padding-block: 0.04em;
+}
+
+.portfolio__title-line > span {
+  display: inline-block;
+  will-change: transform;
+}
+
+.portfolio__intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-16);
+  align-items: flex-start;
+  max-width: 38ch;
+}
+
+.portfolio__count {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--s-8);
+  border: 1px solid var(--c-line);
+  padding: var(--s-8) var(--s-12);
+  font-family: var(--f-mono);
+  font-size: var(--fs-12);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--c-muted-strong);
+}
+
+.portfolio__count strong {
+  color: var(--c-ink);
+  font-weight: 600;
+}
+
+/* Wide container — padding lateral reducido ~40% */
+.portfolio__wide {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: clamp(0.75rem, 2.4vw, 1.8rem);
+}
+
+/* =========================================================
+   Masonry vertical: 4 columnas flex, cada una con sus items
+   apilados verticalmente. La distribución la calculó el script
+   build-portfolio-data.mjs (balance de altura + landscapes
+   intercaladas a lo largo de las 4 columnas).
+   ========================================================= */
+.portfolio__grid {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: clamp(0.4rem, 0.8vw, 0.75rem);
+}
+
+.portfolio__col {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.4rem, 0.8vw, 0.75rem);
+}
+
+.portfolio__item {
+  display: block;
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+  background: var(--c-bg-paper);
+}
+
+.portfolio__item[data-hidden="true"] {
+  display: none;
+}
+
+.portfolio__zoom {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: zoom-in;
+}
+
+.portfolio__zoom img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: grayscale(0.12) contrast(1.04);
+  transition:
+    transform 800ms var(--ease-out),
+    filter var(--t-base) var(--ease-out);
+}
+
+.portfolio__zoom:hover img,
+.portfolio__zoom:focus-visible img {
+  transform: scale(1.04);
+  filter: grayscale(0) contrast(1.05);
+}
+
+.portfolio__zoom::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 10, 0) 60%,
+    rgba(10, 10, 10, 0.35) 100%
+  );
+  opacity: 0;
+  transition: opacity var(--t-base) var(--ease-out);
+  pointer-events: none;
+}
+
+.portfolio__zoom:hover::after,
+.portfolio__zoom:focus-visible::after {
+  opacity: 1;
+}
+
+/* Toggle (expand/collapse) */
+.portfolio__toggle-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-12);
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.portfolio__toggle-meta {
+  font-family: var(--f-mono);
+  font-size: var(--fs-12);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+
+/* Lightbox */
+.portfolio__lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.94);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-modal);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-base) var(--ease-out);
+}
+
+.portfolio__lightbox.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.portfolio__lightbox-figure {
+  margin: 0;
+  max-width: min(92vw, 1400px);
+  max-height: 86vh;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-12);
+  align-items: center;
+}
+
+.portfolio__lightbox-figure img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  background: var(--c-graphite);
+}
+
+.portfolio__lightbox-figure figcaption {
+  color: var(--c-white);
+  font-family: var(--f-mono);
+  font-size: var(--fs-12);
+  letter-spacing: var(--tracking-wide);
+  text-align: center;
+  opacity: 0.7;
+}
+
+.portfolio__lightbox button {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--c-white);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  font-size: 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--t-base) var(--ease-out);
+  cursor: pointer;
+}
+
+.portfolio__lightbox button:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.portfolio__lightbox-close {
+  top: 1.5rem;
+  right: 1.5rem;
+}
+
+.portfolio__lightbox-prev {
+  left: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.portfolio__lightbox-next {
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* =========================================================
+   Responsive — solo cambia column-count
+   ========================================================= */
+@media (max-width: 1279px) {
+  .portfolio__wide {
+    padding-inline: clamp(0.85rem, 2.8vw, 2.1rem);
+  }
+}
+
+/* En breakpoints menores cambiamos a CSS columns nativas para que el
+   navegador re-balancee automáticamente. Las .portfolio__col se vuelven
+   transparentes (display: contents) y los items hijos pasan a ser hijos
+   directos del .portfolio__grid (que ahora actúa como contenedor columns). */
+@media (max-width: 1100px) {
+  .portfolio__header {
+    grid-template-columns: 1fr;
+  }
+  .portfolio__grid {
+    display: block;
+    column-count: 3;
+    column-gap: clamp(0.4rem, 0.8vw, 0.75rem);
+  }
+  .portfolio__col {
+    display: contents;
+  }
+  .portfolio__item {
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    page-break-inside: avoid;
+    margin-bottom: clamp(0.4rem, 0.8vw, 0.75rem);
+  }
+}
+
+@media (max-width: 720px) {
+  .portfolio__grid {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 480px) {
+  .portfolio__grid {
+    column-count: 1;
+  }
+  .portfolio__lightbox-prev {
+    left: 0.5rem;
+  }
+  .portfolio__lightbox-next {
+    right: 0.5rem;
+  }
+}

@@ -1,4 +1,10 @@
+/* =========================================================
+   Investment — Card grid (Aqomi-inspired)
+   Fondo oscuro, 3 cards por fila, una destacada.
+   ========================================================= */
 .invest {
+  background: var(--c-ink);
+  color: var(--c-white);
   border-top: 1px solid var(--c-line-soft);
   border-bottom: 1px solid var(--c-line-soft);
 }
@@ -11,6 +17,10 @@
   margin-bottom: clamp(2rem, 5vw, 4rem);
 }
 
+.invest__header .t-mono {
+  color: rgba(255, 255, 255, 0.5);
+}
+
 .invest__title {
   font-weight: 700;
   font-size: clamp(2.5rem, 6vw, 5.5rem);
@@ -18,6 +28,7 @@
   letter-spacing: -0.025em;
   text-transform: uppercase;
   margin: var(--s-12) 0 0 0;
+  color: var(--c-white);
 }
 
 .invest__title-line {
@@ -33,213 +44,268 @@
 
 .invest__intro .t-body {
   max-width: 38ch;
+  color: rgba(255, 255, 255, 0.72);
 }
 
-.invest__table {
+/* =========================================================
+   Card grid
+   ========================================================= */
+.invest__grid {
   list-style: none;
+  margin: 0;
   padding: 0;
-  margin: 0;
-  border-top: 1px solid var(--c-line);
-}
-
-.invest-row {
-  border-bottom: 1px solid var(--c-line);
-  transition: background var(--t-base) var(--ease-out);
-}
-
-.invest-row:hover { background: rgba(10, 10, 10, 0.025); }
-
-.invest-row__btn {
   display: grid;
-  grid-template-columns: 60px minmax(0, 1.2fr) minmax(0, 1fr) auto;
-  align-items: center;
-  gap: var(--s-24);
-  width: 100%;
-  text-align: left;
-  padding: clamp(1.25rem, 2.4vw, 1.8rem) clamp(0.5rem, 1.5vw, 1.5rem);
-  cursor: pointer;
-  color: var(--c-ink);
-  background: transparent;
-  border: 0;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1rem, 1.5vw, 1.5rem);
+  /* Margen superior para que el badge "Most Popular" tenga espacio cuando
+     sobresale del borde superior de la card destacada */
+  padding-top: 12px;
 }
 
-.invest-row__btn--static {
-  cursor: default;
-  grid-template-columns: 60px minmax(0, 1.2fr) minmax(0, 1fr) auto;
-}
-
-.invest-row__num {
-  color: var(--c-fg-muted);
-}
-
-.invest-row__region {
-  font-family: var(--f-sans);
-  font-weight: 600;
-  font-size: clamp(var(--fs-20), 2.6vw, var(--fs-32));
-  letter-spacing: var(--tracking-tight);
-  text-transform: uppercase;
-}
-
-.invest-row__price {
-  display: inline-flex;
-  align-items: baseline;
-  gap: var(--s-8);
-  text-align: right;
-  justify-content: flex-end;
-}
-
-.invest-row__from {
-  color: var(--c-fg-muted);
-}
-
-.invest-row__price strong {
-  font-family: var(--f-sans);
-  font-weight: 700;
-  font-size: clamp(var(--fs-24), 3vw, var(--fs-40));
-  letter-spacing: var(--tracking-tighter);
-  font-feature-settings: "tnum";
-}
-
-.invest-row__arrow {
-  display: inline-flex;
-  width: 36px;
-  height: 36px;
-  border-radius: 999px;
-  border: 1px solid var(--c-line);
-  align-items: center;
-  justify-content: center;
-  color: var(--c-ink);
-  transition: transform var(--t-base) var(--ease-out), background var(--t-base) var(--ease-out), color var(--t-base) var(--ease-out);
-}
-
-.invest-row__btn:hover .invest-row__arrow {
-  background: var(--c-ink);
-  color: var(--c-white);
-  border-color: var(--c-ink);
-  transform: translateX(2px);
-}
-
-.invest-row.is-open .invest-row__arrow {
-  transform: rotate(90deg);
-  background: var(--c-ink);
-  color: var(--c-white);
-  border-color: var(--c-ink);
-}
-
-.invest-row__panel {
-  height: 0;
-  overflow: hidden;
-  will-change: height;
-}
-
-.invest-row__panel-inner {
-  padding: 0 clamp(0.5rem, 1.5vw, 1.5rem) clamp(1.25rem, 2.4vw, 1.8rem) calc(60px + var(--s-24));
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: clamp(1.25rem, 2.4vw, 2rem);
-  max-width: 80ch;
-}
-
-.invest-row__media {
-  margin: 0;
-  flex: 0 0 auto;
-  width: 200px;
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
-  border-radius: 4px;
-  background: var(--c-bg-paper);
-  will-change: transform, opacity;
-}
-
-.invest-row__media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: grayscale(0.1) contrast(1.04);
-  transition: transform 600ms var(--ease-out);
-}
-
-.invest-row.is-open .invest-row__media img {
-  transform: scale(1.02);
-}
-
-.invest-row__copy {
+.invest-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--s-12);
-  align-items: flex-start;
-  flex: 1 1 auto;
-  min-width: 0;
+  padding: clamp(1.5rem, 2.4vw, 2.25rem);
+  background: var(--c-ink);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  transition:
+    border-color var(--t-base) var(--ease-out),
+    transform var(--t-base) var(--ease-out),
+    background var(--t-base) var(--ease-out);
+  min-height: 320px;
+  /* No overflow:hidden — el badge "Most Popular" sobresale por encima del borde */
 }
 
-.invest-row__blurb {
+/* El gradiente decorativo no debe expandirse fuera de la card */
+.invest-card::before {
+  border-radius: inherit;
+}
+
+.invest-card:hover,
+.invest-card:focus-within {
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Subtle vertical separator effect on hover */
+.invest-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.025) 100%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-base) var(--ease-out);
+}
+
+.invest-card:hover::before,
+.invest-card:focus-within::before {
+  opacity: 1;
+}
+
+/* Featured card — highlighted border + badge */
+.invest-card--featured {
+  border-color: var(--c-white);
+}
+
+.invest-card--featured:hover,
+.invest-card--featured:focus-within {
+  border-color: var(--c-white);
+  transform: translateY(-2px);
+}
+
+.invest-card__badge {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--c-white);
+  color: var(--c-ink);
+  padding: 4px var(--s-12);
+  font-size: var(--fs-11);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+/* Card content */
+.invest-card__tier {
+  font-size: var(--fs-11);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.invest-card__title {
   margin: 0;
+  font-family: var(--f-sans);
+  font-weight: 700;
+  font-size: clamp(var(--fs-24), 2.4vw, var(--fs-32));
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.05;
+  color: var(--c-white);
 }
 
-@media (max-width: 640px) {
-  .invest-row__panel-inner {
-    flex-direction: column;
-    padding-left: clamp(0.5rem, 1.5vw, 1.5rem);
-  }
-  .invest-row__media {
-    width: 100%;
-    max-width: 280px;
-    aspect-ratio: 4 / 3;
-  }
-}
-
-.invest-row__list {
-  list-style: none;
-  padding: 0;
+.invest-card__price {
   margin: 0;
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--s-6) var(--s-16);
-  font-size: var(--fs-13);
-  color: var(--c-charcoal);
+  align-items: baseline;
+  gap: var(--s-8);
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.85);
 }
 
-/* Custom row */
-.invest-row--custom {
-  background: var(--c-ink);
+.invest-card__price-value {
+  font-family: var(--f-sans);
+  font-weight: 600;
+  font-size: clamp(var(--fs-18), 1.8vw, var(--fs-24));
+  font-feature-settings: "tnum";
+  font-style: italic;
   color: var(--c-white);
-  border-bottom: 0;
 }
 
-.invest-row--custom:hover { background: var(--c-graphite); }
-
-.invest-row--custom .invest-row__num,
-.invest-row--custom .invest-row__from {
+.invest-card__price-unit {
+  font-size: var(--fs-13);
+  font-style: italic;
   color: rgba(255, 255, 255, 0.55);
 }
 
-.invest-row--custom .invest-row__region {
+.invest-card__blurb {
+  margin: 0;
+  font-size: var(--fs-14);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.7);
+  flex: 1;
+}
+
+.invest-card__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-6) var(--s-12);
+  font-family: var(--f-mono);
+  font-size: var(--fs-11);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.invest-card__list li {
+  position: relative;
+  padding-left: 10px;
+}
+
+.invest-card__list li::before {
+  content: "·";
+  position: absolute;
+  left: 0;
+  top: -2px;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.invest-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-8);
+  margin-top: var(--s-8);
+  align-self: flex-start;
+  font-size: var(--fs-11);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
   color: var(--c-white);
+  text-decoration: none;
+  padding: var(--s-8) 0;
+  border-bottom: 1px solid transparent;
+  transition:
+    border-color var(--t-base) var(--ease-out),
+    gap var(--t-base) var(--ease-out);
 }
 
-.invest-row--custom .invest-row__price strong {
-  color: var(--c-white);
+.invest-card__cta:hover,
+.invest-card__cta:focus-visible {
+  border-bottom-color: var(--c-white);
+  gap: var(--s-12);
 }
 
-.invest-row--custom .invest-row__btn--static {
-  cursor: default;
+.invest-card__cta-arrow {
+  display: inline-flex;
+  transition: transform var(--t-base) var(--ease-out);
 }
 
-@media (max-width: 880px) {
-  .invest__header { grid-template-columns: 1fr; }
+.invest-card__cta:hover .invest-card__cta-arrow,
+.invest-card__cta:focus-visible .invest-card__cta-arrow {
+  transform: translate(2px, -2px);
+}
 
-  .invest-row__btn,
-  .invest-row__btn--static {
-    grid-template-columns: 40px 1fr auto;
-    gap: var(--s-12);
+/* Custom card — inverted (white background, black text) */
+.invest-card--custom {
+  background: var(--c-white);
+  color: var(--c-ink);
+  border-color: var(--c-white);
+}
+
+.invest-card--custom .invest-card__tier {
+  color: rgba(10, 10, 10, 0.5);
+}
+
+.invest-card--custom .invest-card__title {
+  color: var(--c-ink);
+}
+
+.invest-card--custom .invest-card__price-value {
+  color: var(--c-ink);
+}
+
+.invest-card--custom .invest-card__price-unit {
+  color: rgba(10, 10, 10, 0.55);
+}
+
+.invest-card--custom .invest-card__blurb {
+  color: rgba(10, 10, 10, 0.7);
+}
+
+.invest-card--custom .invest-card__cta {
+  color: var(--c-ink);
+}
+
+.invest-card--custom .invest-card__cta:hover,
+.invest-card--custom .invest-card__cta:focus-visible {
+  border-bottom-color: var(--c-ink);
+}
+
+.invest-card--custom:hover,
+.invest-card--custom:focus-within {
+  border-color: var(--c-ink);
+  background: var(--c-bg-paper);
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+@media (max-width: 1100px) {
+  .invest__header {
+    grid-template-columns: 1fr;
   }
+  .invest__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 
-  .invest-row__price { grid-column: 2 / span 2; justify-content: flex-start; }
-  .invest-row__arrow { grid-column: 3; grid-row: 1; }
-  .invest-row--custom .pill { grid-column: 2 / span 2; }
-
-  .invest-row__panel-inner {
-    padding-left: calc(40px + var(--s-12));
+@media (max-width: 640px) {
+  .invest__grid {
+    grid-template-columns: 1fr;
+  }
+  .invest-card {
+    min-height: auto;
   }
 }

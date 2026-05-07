@@ -6,7 +6,7 @@ import Hero from "@sections/Hero.astro";
 import Manifest from "@sections/Manifest.astro";
 import About from "@sections/About.astro";
 import Studio from "@sections/Studio.astro";
-import Gallery from "@sections/Gallery.astro";
+import Portfolio from "@sections/Portfolio.astro";
 import Craft from "@sections/Craft.astro";
 import Packages from "@sections/Packages.astro";
 import Faq from "@sections/Faq.astro";
@@ -20,8 +20,8 @@ import { site } from "@data/site";
   <Header slot="header" />
   <PageIndex sections={[...site.pageIndex]} />
   <Hero />
-  <Gallery />
   <Manifest />
+  <Portfolio />
   <About />
   <VideoBand
     src="/videos/band-1.mp4"
